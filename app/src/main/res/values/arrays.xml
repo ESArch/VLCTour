@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="drawer_options">
+        <item>Home</item>
+        <item>Near me</item>
+        <item>What to see</item>
+        <item>Routes</item>
+    </array>
+</resources>
