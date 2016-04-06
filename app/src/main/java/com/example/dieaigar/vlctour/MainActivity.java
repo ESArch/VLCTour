@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.fragments.NearMeFragment;
 import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
 
@@ -103,6 +104,7 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case 2:
                             Toast.makeText(MainActivity.this, "Near me", Toast.LENGTH_SHORT).show();
+                            fragment = new NearMeFragment();
                             break;
                         case 3:
                             Toast.makeText(MainActivity.this, "What to see", Toast.LENGTH_SHORT).show();
