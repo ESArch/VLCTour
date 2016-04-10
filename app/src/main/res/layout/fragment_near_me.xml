@@ -2,12 +2,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dieaigar.vlctour.fragments.NearMeFragmen">
+    tools:context="com.example.dieaigar.vlctour.fragments.NearMeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/nearMeMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            class="com.google.android.gms.maps.MapFragment"/>
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/radius"
+            android:layout_weight="5"
+            android:max="10"
+            android:progress="0"
+            android:indeterminate="false" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:layout_gravity="center">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/commerce"
+                android:background="@drawable/ic_commerce"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/food"
+                android:background="@drawable/ic_food"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nature"
+                android:background="@drawable/ic_nature"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sleeping"
+                android:background="@drawable/ic_sleeping"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/restaurant"
+                android:background="@drawable/ic_restaurant"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/monuments"
+                android:background="@drawable/ic_monuments"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/police"
+                android:background="@drawable/ic_police"
+                android:layout_gravity="center"
+                android:onClick="filterChange"
+                android:layout_weight="1" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/horizontalScrollView" />
+
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
