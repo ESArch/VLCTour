@@ -1,28 +1,42 @@
 package com.example.dieaigar.vlctour.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.dieaigar.vlctour.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class RoutesFragment extends Fragment {
-    public static final String ARG_PLANET_NUMBER = "planet_number";
 
     public RoutesFragment() {
-        // Empty constructor required for fragment subclasses
+
     }
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.activity_poi, container, false);
         getActivity().setTitle("Routes");
+
+
+
+        /*MapFragment mMapFragment = MapFragment.newInstance();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.content_frame, mMapFragment);
+        fragmentTransaction.commit();*/
+
         return rootView;
     }
 }
