@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.dieaigar.vlctour.fragments.NearMeFragment;
 import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
+import com.example.dieaigar.vlctour.fragments.ListRoutesFragment;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -112,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case 4:
                             Toast.makeText(MainActivity.this, "Routes", Toast.LENGTH_SHORT).show();
-                            fragment = new RoutesFragment();
+                            fragment = new ListRoutesFragment();
                             break;
                     }
 

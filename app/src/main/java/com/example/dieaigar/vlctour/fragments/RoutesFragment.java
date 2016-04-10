@@ -27,15 +27,13 @@ public class RoutesFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_poi, container, false);
-        getActivity().setTitle("Routes");
+        View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
+        getActivity().setTitle("Route Map");
 
-
-
-        /*MapFragment mMapFragment = MapFragment.newInstance();
+        MapFragment mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.content_frame, mMapFragment);
-        fragmentTransaction.commit();*/
+        fragmentTransaction.commit();
 
         return rootView;
     }
