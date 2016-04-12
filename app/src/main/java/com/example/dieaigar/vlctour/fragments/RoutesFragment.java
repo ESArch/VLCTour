@@ -11,12 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.dieaigar.vlctour.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,8 @@ import java.util.Locale;
 
 public class RoutesFragment extends Fragment {
 
-
+    GoogleMap map;
+    Polyline route = null;
 
     public RoutesFragment() {
 
@@ -45,6 +48,7 @@ public class RoutesFragment extends Fragment {
         options.title("Lab SDM");
         options.snippet("UPV, Valencia, Spain");
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        map.addMarker(options);
 
         return rootView;
     }
