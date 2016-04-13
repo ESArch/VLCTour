@@ -1,23 +1,23 @@
 package com.example.dieaigar.vlctour;
 
 
-public class Anime {
+public class POI {
     private int imagen;
     private String nombre;
-    private int visitas;
+    private String descripcion;
 
-    public Anime(int imagen, String nombre, int visitas) {
+    public POI(int imagen, String nombre, String descripcion) {
         this.imagen = imagen;
         this.nombre = nombre;
-        this.visitas = visitas;
+        this.descripcion = descripcion;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public int getVisitas() {
-        return visitas;
+    public String getDescripcion() {
+        return descripcion;
     }
 
     public int getImagen() {
