@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:id="@+id/radius"
             android:layout_weight="5"
-            android:max="10"
+            android:max="5000"
             android:progress="0"
             android:indeterminate="false" />
 
@@ -32,43 +32,43 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:layout_gravity="center">
-
+            <!-- shopping -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/commerce"
+                android:id="@+id/shopping"
                 android:background="@drawable/ic_commerce"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- pub -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/food"
+                android:id="@+id/pub"
                 android:background="@drawable/ic_food"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- entertainment -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nature"
-                android:background="@drawable/ic_nature"
+                android:id="@+id/entertainment"
+                android:background="@drawable/ic_entertainment"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- hotels -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sleeping"
+                android:id="@+id/hotels"
                 android:background="@drawable/ic_sleeping"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- restaurant -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,21 +77,12 @@
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- POI -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/monuments"
+                android:id="@+id/poi"
                 android:background="@drawable/ic_monuments"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/police"
-                android:background="@drawable/ic_police"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
