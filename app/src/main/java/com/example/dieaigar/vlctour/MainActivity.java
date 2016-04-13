@@ -2,6 +2,7 @@ package com.example.dieaigar.vlctour;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.dieaigar.vlctour.fragments.NearMeFragment;
+import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
 
 
@@ -82,6 +83,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
             @Override
             public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
@@ -92,6 +94,8 @@ public class MainActivity extends ActionBarActivity {
                     int position = recyclerView.getChildPosition(child);
 
                     Fragment fragment = null;
+                    Intent intent = null;
+
 
                     switch (position){
                         case 1:
@@ -99,16 +103,17 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case 2:
                             Toast.makeText(MainActivity.this, "Near me", Toast.LENGTH_SHORT).show();
-                            fragment = new NearMeFragment();
                             break;
                         case 3:
                             Toast.makeText(MainActivity.this, "What to see", Toast.LENGTH_SHORT).show();
+                            fragment = new POIFragment();
                             break;
                         case 4:
                             Toast.makeText(MainActivity.this, "Routes", Toast.LENGTH_SHORT).show();
                             fragment = new RoutesFragment();
                             break;
                     }
+
 
                     if(fragment != null){
                         // Insert the fragment by replacing any existing fragment
