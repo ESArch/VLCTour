@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:layout_gravity="center">
-
+            <!-- shopping -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- pub -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,16 +50,16 @@
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- entertainment -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/nature"
-                android:background="@drawable/ic_nature"
+                android:background="@drawable/ic_entertainment"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- hotels -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- restaurant -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,21 +77,12 @@
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
-
+            <!-- POI -->
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/monuments"
                 android:background="@drawable/ic_monuments"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/police"
-                android:background="@drawable/ic_police"
                 android:layout_gravity="center"
                 android:onClick="filterChange"
                 android:layout_weight="1" />
