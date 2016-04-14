@@ -31,6 +31,8 @@ public class MainActivity extends ActionBarActivity {
     String TITLES[] = {"Home","Near me","What to see","Routes"};
     int ICONS[] = {R.drawable.ic_home,R.drawable.ic_near,R.drawable.ic_pois,R.drawable.ic_routes};
 
+    Fragment fragment = null;
+
     //Similarly we Create a String Resource for the name and email in the header view
     //And we also create a int resource for profile picture in the header view
 
@@ -94,8 +96,6 @@ public class MainActivity extends ActionBarActivity {
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
                     int position = recyclerView.getChildPosition(child);
-
-                    Fragment fragment = null;
                     Intent intent = null;
 
 
@@ -113,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case 4:
                             Toast.makeText(MainActivity.this, "Routes", Toast.LENGTH_SHORT).show();
-                            fragment = new RoutesFragment();
+                            fragment = new ListRoutesFragment();
                             break;
                     }
 
