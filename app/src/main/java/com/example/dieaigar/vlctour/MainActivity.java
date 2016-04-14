@@ -205,12 +205,14 @@ public class MainActivity extends ActionBarActivity {
         if(nearMeFragment.getFilters().get(0).contains(view.getId())) {
             System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
             nearMeFragment.getFilters().get(1).add(view.getId());
+            //No funciona
             nearMeFragment.getFilters().get(0).remove(view.getId());
             System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
         }
         else {
             System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
             nearMeFragment.getFilters().get(0).add(view.getId());
+            //No funciona
             nearMeFragment.getFilters().get(1).remove(view.getId());
             System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
         }
