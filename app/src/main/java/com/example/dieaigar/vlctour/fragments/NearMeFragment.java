@@ -6,8 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.example.dieaigar.vlctour.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 
-public class NearMeFragment extends Fragment {
+public class NearMeFragment extends Fragment implements OnMapReadyCallback {
 
+    private SeekBar seekBar;
+    private GoogleMap map;
     private double radius;
     private Map<Integer, List<Integer>> filters  = new HashMap<Integer, List<Integer>>(0);
 
@@ -26,7 +32,10 @@ public class NearMeFragment extends Fragment {
     private static final List<String> HOTELS = new ArrayList<String>(Arrays.asList("lodging"));
     private static final List<String> PUB = new ArrayList<String>(Arrays.asList("night_club"));
     private static final List<String> ENTERTAINMENT = new ArrayList<String>(Arrays.asList("movie_theater"));
-    private static final List<String> POI = new ArrayList<String>(Arrays.asList("park","museum","monument","beach"));
+    private static final List<String> PARK = new ArrayList<String>(Arrays.asList("park","museum","monument","beach"));
+    private static final List<String> MUSEUM = new ArrayList<String>(Arrays.asList("museum"));
+    private static final List<String> MONUMENT = new ArrayList<String>(Arrays.asList("monument"));
+    private static final List<String> BEACH = new ArrayList<String>(Arrays.asList("beach"));
 
     public NearMeFragment() {
         // Required empty public constructor
@@ -40,6 +49,7 @@ public class NearMeFragment extends Fragment {
         getActivity().setTitle("Near Me");
 
         //Set variables
+        seekBar = (SeekBar) view.findViewById(R.id.radius);
         radius = 0.0;
         filters.put(0, new ArrayList<Integer>(0));
         filters.put(1, new ArrayList<Integer>(0));
@@ -50,7 +60,32 @@ public class NearMeFragment extends Fragment {
         filters.get(1).add(((ImageButton)view.findViewById(R.id.hotels)).getId());
         filters.get(1).add(((ImageButton)view.findViewById(R.id.restaurant)).getId());
         filters.get(1).add(((ImageButton)view.findViewById(R.id.entertainment)).getId());
-        filters.get(1).add(((ImageButton)view.findViewById(R.id.poi)).getId());
+        filters.get(1).add(((ImageButton)view.findViewById(R.id.museum)).getId());
+        filters.get(1).add(((ImageButton)view.findViewById(R.id.park)).getId());
+        filters.get(1).add(((ImageButton)view.findViewById(R.id.monument)).getId());
+        filters.get(1).add(((ImageButton)view.findViewById(R.id.beach)).getId());
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            Toast toast = null;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                radius = (progress/2.0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if(toast != null) { toast.cancel(); }
+                toast = Toast.makeText(getActivity(),"Radius: " + radius + "Km.", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
 
         return view;
     }
@@ -71,9 +106,14 @@ public class NearMeFragment extends Fragment {
         this.filters = filters;
     }
 
-    public void filterChange(View v) {
+    public void updateMap() {
 
     }
 
-    //TODO hacerlo con listeners
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        //TODO getCurrent location
+        //map.setLocationSource();
+    }
 }

@@ -3,6 +3,7 @@ package com.example.dieaigar.vlctour;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -196,5 +197,22 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void filterChange(View view) {
+        NearMeFragment nearMeFragment = (NearMeFragment) fragment;
+
+        if(nearMeFragment.getFilters().get(0).contains(view.getId())) {
+            System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
+            nearMeFragment.getFilters().get(1).add(view.getId());
+            nearMeFragment.getFilters().get(0).remove(view.getId());
+            System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
+        }
+        else {
+            System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
+            nearMeFragment.getFilters().get(0).add(view.getId());
+            nearMeFragment.getFilters().get(1).remove(view.getId());
+            System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
+        }
     }
 }

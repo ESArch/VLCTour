@@ -22,76 +22,107 @@
             android:layout_height="match_parent"
             android:id="@+id/radius"
             android:layout_weight="5"
-            android:max="5000"
+            android:max="10"
             android:progress="0"
             android:indeterminate="false" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:layout_gravity="center">
-            <!-- shopping -->
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/shopping"
-                android:background="@drawable/ic_commerce"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-            <!-- pub -->
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/pub"
-                android:background="@drawable/ic_food"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-            <!-- entertainment -->
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/entertainment"
-                android:background="@drawable/ic_entertainment"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-            <!-- hotels -->
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/hotels"
-                android:background="@drawable/ic_sleeping"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-            <!-- restaurant -->
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/restaurant"
-                android:background="@drawable/ic_restaurant"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
-            <!-- POI -->
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/poi"
-                android:background="@drawable/ic_monuments"
-                android:layout_gravity="center"
-                android:onClick="filterChange"
-                android:layout_weight="1" />
+            android:id="@+id/horizontalScrollView"
+            android:layout_weight="5">
 
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/horizontalScrollView" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:layout_gravity="center">
+                <!-- shopping -->
 
-        </LinearLayout>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shopping"
+                    android:background="@drawable/ic_commerce"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- pub -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pub"
+                    android:background="@drawable/ic_food"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- entertainment -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/entertainment"
+                    android:background="@drawable/ic_entertainment"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- hotels -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hotels"
+                    android:background="@drawable/ic_sleeping"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- restaurant -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/restaurant"
+                    android:background="@drawable/ic_restaurant"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- park -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/park"
+                    android:background="@drawable/ic_monuments"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- museum -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/museum"
+                    android:background="@drawable/ic_monuments"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- monument -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/monument"
+                    android:background="@drawable/ic_monuments"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+                <!-- beach -->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/beach"
+                    android:background="@drawable/ic_monuments"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
+
 </FrameLayout>
