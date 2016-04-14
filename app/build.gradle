@@ -31,5 +31,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.android.support:design:23.2.1'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'com.google.maps.android:android-maps-utils:0.4'
 
     }
