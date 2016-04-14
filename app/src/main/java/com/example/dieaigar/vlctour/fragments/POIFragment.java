@@ -38,6 +38,7 @@ Declarar instancias globales
         View rootView = inflater.inflate(R.layout.fragment_poi, container, false);
         getActivity().setTitle("Points Of Interest");
 
+
         // Inicializar POIs
         List<POI> items = new ArrayList<>();
         MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(this.getActivity());
