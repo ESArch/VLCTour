@@ -3,6 +3,7 @@ package com.example.dieaigar.vlctour;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -202,18 +204,22 @@ public class MainActivity extends ActionBarActivity {
     public void filterChange(View view) {
         NearMeFragment nearMeFragment = (NearMeFragment) fragment;
 
+        System.out.println("Id recibido: " + view.getId());
+
         if(nearMeFragment.getFilters().get(0).contains(view.getId())) {
             System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
             nearMeFragment.getFilters().get(1).add(view.getId());
-            //No funciona
+            System.out.println("Añadido a 0");
             nearMeFragment.getFilters().get(0).remove(view.getId());
+            System.out.println("Eliminador de 1");
             System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
         }
-        else {
+        else if(nearMeFragment.getFilters().get(1).contains(view.getId())) {
             System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
             nearMeFragment.getFilters().get(0).add(view.getId());
-            //No funciona
+            System.out.println("Añadido a 0");
             nearMeFragment.getFilters().get(1).remove(view.getId());
+            System.out.println("Eliminador de 1");
             System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
         }
     }

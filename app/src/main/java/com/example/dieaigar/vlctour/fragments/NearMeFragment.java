@@ -1,7 +1,9 @@
 package com.example.dieaigar.vlctour.fragments;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +88,15 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
                 toast.show();
             }
         });
+
+        for(Map.Entry<Integer, List<Integer>> entry : filters.entrySet()) {
+            StringBuilder string = new StringBuilder();
+            string.append(entry.getKey() + ": ");
+            for(Integer integer : entry.getValue()) {
+                string.append(String.valueOf(integer) +". ");
+            }
+            System.out.println(string.toString());
+        }
 
         return view;
     }
