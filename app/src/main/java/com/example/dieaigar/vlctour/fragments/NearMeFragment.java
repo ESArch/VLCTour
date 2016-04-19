@@ -7,11 +7,13 @@ import android.app.Fragment;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -22,10 +24,12 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.dieaigar.vlctour.R;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -49,7 +53,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class NearMeFragment extends Fragment implements OnMapReadyCallback {
+public class NearMeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -58,8 +62,10 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
     private double radius;
     private Map<Integer, List<Integer>> filters = new HashMap<Integer, List<Integer>>(0);
     private MapFragment mapFragment;
-    private LatLng userLocation;
-    View view;
+    private Location userLocation;
+    private LocationRequest locationRequest;
+    private View view;
+    private GoogleApiClient googleApiClient;
 
     private static final List<String> RESTAURANTS = new ArrayList<String>(Arrays.asList("restaurant"));
     private static final List<String> SHOPPING = new ArrayList<String>(Arrays.asList("department_store", "shopping_mall", "clothing_store", "jewelry_store", "shoe_store"));
@@ -75,7 +81,60 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        //Creating the google api client
+        googleApiClient = new GoogleApiClient.
+                Builder(getActivity()).
+                addOnConnectionFailedListener(this).
+                addConnectionCallbacks(this).
+                addApi(LocationServices.API).
+                build();
+
+        //Creating locationRequest
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        googleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
+        googleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        userLocation = location;
+        updateUI();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(getActivity(), "Service unavaliable. Try later.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        userLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(getActivity(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,15 +188,6 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        for (Map.Entry<Integer, List<Integer>> entry : filters.entrySet()) {
-            StringBuilder string = new StringBuilder();
-            string.append(entry.getKey() + ": ");
-            for (Integer integer : entry.getValue()) {
-                string.append(String.valueOf(integer) + ". ");
-            }
-            System.out.println(string.toString());
-        }
-
         return view;
     }
 
@@ -168,24 +218,9 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.469684, -0.376326)).zoom(12).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
 
         currentLocation();
-
-        MarkerOptions options = new MarkerOptions();
-
-        options.position(new LatLng(39.482463, -0.346415));
-        options.title("SDM");
-        options.snippet("UPV, Valencia, Spain");
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-        map.addMarker(options);
-
-        options.position(new LatLng(37.482555, -0.3494001));
-        options.title("Lab 2");
-        options.snippet("This is the second lab");
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        map.addMarker(options);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -196,7 +231,15 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
         map.setMyLocationEnabled(true);
-        Toast.makeText(getActivity(), "setMyLocationEnabled(true)", Toast.LENGTH_SHORT).show();
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+
+        //updateUI();
+    }
+
+    public void updateUI() {
+
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude())).zoom(12).build();
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     @Override
@@ -205,6 +248,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback {
             case REQUEST_CODE_ASK_PERMISSIONS :
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     map.setMyLocationEnabled(true);
+                    map.getUiSettings().setMyLocationButtonEnabled(true);
                 }
                 else {
                     Toast.makeText(getActivity(), "Location access denied", Toast.LENGTH_SHORT).show();
