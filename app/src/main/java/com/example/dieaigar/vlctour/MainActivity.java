@@ -115,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case 4:
                             Toast.makeText(MainActivity.this, "Routes", Toast.LENGTH_SHORT).show();
-                            fragment = new ListRoutesFragment();
+                            fragment = new RoutesFragment();
                             break;
                     }
 
