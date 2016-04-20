@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
+import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -73,10 +75,32 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.469684, -0.376326)).zoom(12).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.482463, -0.346415)).zoom(10).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
+
+        ArrayList<POI> items = new ArrayList<>();
+        MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(this.getActivity());
+        ArrayList<ArrayList<String>> pois = db.getPOIs();
+        String[] elements = new String[3];
+        for(int i=0;i<pois.size();i++) {
+            elements[0] = elements[1] = elements[2] = "";
+            float coord1, coord2;
+            for (int j = 0; j < elements.length; j++) {
+                elements[j] = pois.get(i).get(j);
+            }
+            String[] coords = elements[2].substring(6, elements[2].length()-1).split(" ");
+            coord1 = Float.parseFloat(coords[1]);
+            coord2 = Float.parseFloat(coords[0]);
+            MarkerOptions options = new MarkerOptions();
+            options.position(new LatLng(coord1, coord2));
+            options.title(elements[0]);
+            //options.snippet(elements[1]);
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            map.addMarker(options);
+        }
+
         new RouteAsyncTask().execute(); //pinta ruta en el mapa
     }
 
@@ -153,8 +177,8 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
                 route = map.addPolyline(new PolylineOptions()
                         .addAll(result)
-                        .color(Color.parseColor("#FF0000"))
-                        .width(5)
+                        .color(Color.parseColor("#008000"))
+                        .width(10)
                         .geodesic(true));
             }
         }

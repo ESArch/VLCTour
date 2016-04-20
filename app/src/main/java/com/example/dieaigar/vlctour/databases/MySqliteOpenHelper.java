@@ -91,8 +91,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  }
 
-
-    //get scores from database
     public ArrayList<ArrayList<String>> getPOIs() {
 
         ArrayList<ArrayList<String>> result = new ArrayList<>();
@@ -114,7 +112,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    //adding a score to the database
     public void addPOI(String nombre, String tipo, String coordenadas) {
 
         SQLiteDatabase database = getWritableDatabase();
@@ -126,7 +123,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-    //adding a score to the database
     public void addPOI(String nombre, String tipo, String coordenadas, SQLiteDatabase db) {
 
         ContentValues values = new ContentValues();
@@ -136,9 +132,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         db.insert("pois", null, values);
     }
 
-    //deletes everything in the database
-    public void deleteAllScores() {
-
+    public void deleteAllPOI() {
         SQLiteDatabase database = getWritableDatabase();
         database.delete("pois", null, null);
         database.close();

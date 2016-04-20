@@ -103,19 +103,15 @@ public class MainActivity extends ActionBarActivity {
 
                     switch (position){
                         case 1:
-                            Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
-                            Toast.makeText(MainActivity.this, "Near me", Toast.LENGTH_SHORT).show();
                             fragment = new NearMeFragment();
                             break;
                         case 3:
-                            Toast.makeText(MainActivity.this, "What to see", Toast.LENGTH_SHORT).show();
                             fragment = new POIFragment();
                             break;
                         case 4:
-                            Toast.makeText(MainActivity.this, "Routes", Toast.LENGTH_SHORT).show();
-                            fragment = new RoutesFragment();
+                            fragment = new ListRoutesFragment();
                             break;
                     }
 
