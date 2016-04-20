@@ -47,8 +47,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         this.context=context;
     }
 
-
-    //onCreate
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
@@ -95,7 +93,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    //onUpgrade, not really needed
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  }
 
@@ -119,7 +116,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    //adding a score to the database
     public void addPOI(String nombre, String tipo, Double latitud, Double longitud) {
 
         SQLiteDatabase database = getWritableDatabase();
@@ -143,7 +139,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         db.insert("pois", null, values);
     }
 
-    //deletes everything in the database
     public void deleteAllScores() {
 
         SQLiteDatabase database = getWritableDatabase();
