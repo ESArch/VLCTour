@@ -1,6 +1,7 @@
 package com.example.dieaigar.vlctour.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -11,11 +12,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.MainActivity;
+import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
+import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListRoutesFragment extends Fragment {
+
+    Fragment fragment = null;
+
     public ListRoutesFragment() {
 
     }
@@ -28,8 +39,13 @@ public class ListRoutesFragment extends Fragment {
         FloatingActionButton myFab = (FloatingActionButton)  rootView.findViewById(R.id.add_route);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //add_route();
-                Toast.makeText(rootView.getContext(), "Button pressed", Toast.LENGTH_SHORT).show();
+                fragment = new RoutesFragment();
+                if(fragment != null) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            .commit();
+                }
             }
         });
 
@@ -42,7 +58,8 @@ public class ListRoutesFragment extends Fragment {
         lv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-
         return rootView;
     }
+
+
 }
