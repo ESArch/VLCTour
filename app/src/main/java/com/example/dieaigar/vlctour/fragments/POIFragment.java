@@ -42,16 +42,12 @@ Declarar instancias globales
         // Inicializar POIs
         List<POI> items = new ArrayList<>();
         MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(this.getActivity());
-        ArrayList<ArrayList<String>> pois = db.getPOIs();
+        ArrayList<POI> pois = db.getPOIs();
         String[] elements = new String[3];
 
         for(int i=0;i<pois.size();i++){
-            elements[0]=elements[1]=elements[2]="";
-            for(int j = 0; j<elements.length; j++){
-                elements[j] = pois.get(i).get(j);
-            }
             int poiimageid = getPOIImage(i);
-            items.add(new POI(poiimageid, WordUtils.capitalizeFully(elements[0], '\'', ' '), WordUtils.capitalizeFully(elements[1])));
+            items.add(new POI(poiimageid, WordUtils.capitalizeFully(pois.get(i).getNombre(), '\'', ' '), WordUtils.capitalizeFully(pois.get(i).getDescripcion()), pois.get(i).getLatitud(), pois.get(i).getLongitud()));
         }
         /*
         items.add(new POI(R.drawable.poi_000, "Antiguo Hospital General", "Monument"));
