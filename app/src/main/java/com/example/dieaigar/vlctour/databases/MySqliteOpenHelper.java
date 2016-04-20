@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 
 import android.content.ContentValues;
@@ -51,7 +52,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, coordenadas TEXT NOT NULL);");
+            db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, latitud DOUBLE NOT NULL, longitud DOUBLE NOT NULL);");
             parsecsv(db);
         }catch(SQLException e){e.printStackTrace();}
     }
@@ -67,7 +68,14 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
             while ((line = br.readLine()) != null) {
 
                 String[] items = line.split(cvsSplitBy);
-                addPOI(items[0], items[1], items[2], db);
+                String aux = items[2];
+                aux = aux.substring(6);
+                //System.out.println(aux);
+                aux = aux.substring(0, aux.length()-1);
+                //System.out.println(aux);
+                String[] coord = aux.split(" ");
+
+                addPOI(items[0], items[1], Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), db);
 
             }
 
@@ -91,20 +99,19 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  }
 
-    public ArrayList<ArrayList<String>> getPOIs() {
 
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
+    //get scores from database
+    public ArrayList<POI> getPOIs() {
+
+        ArrayList<POI> result = new ArrayList<>();
         ArrayList<String> item;
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query("pois", new String[]{"nombre", "tipo", "coordenadas"}, null, null, null, null, null);
+        Cursor cursor = database.query("pois", new String[]{"nombre", "tipo", "latitud", "longitud"}, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
 
-            item = new ArrayList<String>();
-            item.add(cursor.getString(0));
-            item.add(cursor.getString(1));
-            item.add(cursor.getString(2));
-            result.add(item);
+            POI p = new POI(0,cursor.getString(0),cursor.getString(1),cursor.getDouble(2), cursor.getDouble(3));
+            result.add(p);
         }
 
         cursor.close();
@@ -112,27 +119,33 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public void addPOI(String nombre, String tipo, String coordenadas) {
+    //adding a score to the database
+    public void addPOI(String nombre, String tipo, Double latitud, Double longitud) {
 
         SQLiteDatabase database = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("tipo", tipo);
-        values.put("coordenadas", coordenadas);
+        values.put("latitud", latitud);
+        values.put("longitud", longitud);
         database.insert("pois", null, values);
         database.close();
     }
 
-    public void addPOI(String nombre, String tipo, String coordenadas, SQLiteDatabase db) {
+    //adding a score to the database
+    public void addPOI(String nombre, String tipo, Double latitud, Double longitud, SQLiteDatabase db) {
 
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("tipo", tipo);
-        values.put("coordenadas", coordenadas);
+        values.put("latitud", latitud);
+        values.put("longitud", longitud);
         db.insert("pois", null, values);
     }
 
-    public void deleteAllPOI() {
+    //deletes everything in the database
+    public void deleteAllScores() {
+
         SQLiteDatabase database = getWritableDatabase();
         database.delete("pois", null, null);
         database.close();
