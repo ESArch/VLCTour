@@ -8,7 +8,7 @@ public class POI {
     private Double latitud;
     private Double longitud;
 
-    public POI(int imagen, String nombre, String tipo, Double latitud, Double longitud) {
+    public POI(int imagen, String nombre, String tipo, Double longitud, Double latitud) {
         this.imagen = imagen;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -20,7 +20,7 @@ public class POI {
         return nombre;
     }
 
-    public String getDescripcion() {
+    public String getTipo() {
         return tipo;
     }
 
