@@ -1,12 +1,17 @@
 package com.example.dieaigar.vlctour.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.POIAdapter;
@@ -27,6 +32,8 @@ Declarar instancias globales
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
+
+    Fragment fragment = null;
 
     public POIFragment() {
         // Empty constructor required for fragment subclasses
@@ -68,6 +75,21 @@ Declarar instancias globales
         // Crear un nuevo adaptador
         adapter = new POIAdapter(items);
         recycler.setAdapter(adapter);
+
+        //Set click en la imagen
+        /*RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.individual_poi_layout);
+        rl.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                fragment = new POIDetailsFragment();
+                if(fragment != null) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            .commit();
+                }
+            }
+        });*/
+
         return rootView;
     }
 
@@ -91,4 +113,5 @@ Declarar instancias globales
         return poiimageid;
 
     }
+
 }

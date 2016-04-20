@@ -1,11 +1,15 @@
 package com.example.dieaigar.vlctour;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.dieaigar.vlctour.fragments.POIDetailsFragment;
 
 import java.util.List;
 
@@ -47,5 +51,7 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.POIViewHolder> {
         viewHolder.imagen.setImageResource(items.get(i).getImagen());
         viewHolder.nombre.setText(items.get(i).getNombre());
         viewHolder.descripcion.setText(items.get(i).getTipo());
+
     }
+
 }
