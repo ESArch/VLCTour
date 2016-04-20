@@ -52,7 +52,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, latitud DOUBLE NOT NULL, longitud DOUBLE NOT NULL);");
+            db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, longitud DOUBLE NOT NULL, latitud DOUBLE NOT NULL);");
             parsecsv(db);
         }catch(SQLException e){e.printStackTrace();}
     }
@@ -76,6 +76,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
                 String[] coord = aux.split(" ");
 
                 addPOI(items[0], items[1], Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), db);
+                System.out.println(items[0]);
 
             }
 
@@ -106,12 +107,13 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         ArrayList<POI> result = new ArrayList<>();
         ArrayList<String> item;
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query("pois", new String[]{"nombre", "tipo", "latitud", "longitud"}, null, null, null, null, null);
+        Cursor cursor = database.query("pois", new String[]{"nombre", "tipo", "longitud", "latitud"}, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
 
             POI p = new POI(0,cursor.getString(0),cursor.getString(1),cursor.getDouble(2), cursor.getDouble(3));
             result.add(p);
+            System.out.println(cursor.getString(0));
         }
 
         cursor.close();
@@ -120,26 +122,26 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     }
 
     //adding a score to the database
-    public void addPOI(String nombre, String tipo, Double latitud, Double longitud) {
+    public void addPOI(String nombre, String tipo, Double longitud, Double latitud) {
 
         SQLiteDatabase database = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("tipo", tipo);
-        values.put("latitud", latitud);
         values.put("longitud", longitud);
+        values.put("latitud", latitud);
         database.insert("pois", null, values);
         database.close();
     }
 
     //adding a score to the database
-    public void addPOI(String nombre, String tipo, Double latitud, Double longitud, SQLiteDatabase db) {
+    public void addPOI(String nombre, String tipo, Double longitud, Double latitud, SQLiteDatabase db) {
 
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("tipo", tipo);
-        values.put("latitud", latitud);
         values.put("longitud", longitud);
+        values.put("latitud", latitud);
         db.insert("pois", null, values);
     }
 
