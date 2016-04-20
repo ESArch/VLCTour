@@ -1,9 +1,11 @@
 package com.example.dieaigar.vlctour.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,7 +49,6 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
     GoogleMap map;
     Polyline route = null;
-    final String maps_API_KEY = "AIzaSyBxixEz7l6vZA8Pj4dWqHxN1Y7OVBLdBiE";
     final String directions_API_KEY = "AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0";
 
     public RoutesFragment() {
@@ -72,9 +73,11 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.469684, -0.376326)).zoom(15).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.469684, -0.376326)).zoom(12).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        new RouteAsyncTask().execute();
+        map.setBuildingsEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        new RouteAsyncTask().execute(); //pinta ruta en el mapa
     }
 
     /*private void addMarkers () {
@@ -100,7 +103,8 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             List<LatLng> pointsList = null;
 
             String uri = String.format("https://maps.googleapis.com/maps/api/directions/json?" +
-                    "origin=39.482463,-0.346415&destination=43.361161,-8.445140&waypoints=Cádiz&mode=driving&"+"key="+directions_API_KEY);
+                    "origin=39.482463,-0.346415&destination=43.361161,-8.445140&waypoints=Cádiz&mode=driving&" +
+                    "key="+directions_API_KEY);
 
             try {
                 URL url = new URL(uri);
@@ -150,7 +154,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                 route = map.addPolyline(new PolylineOptions()
                         .addAll(result)
                         .color(Color.parseColor("#FF0000"))
-                        .width(12)
+                        .width(5)
                         .geodesic(true));
             }
         }
