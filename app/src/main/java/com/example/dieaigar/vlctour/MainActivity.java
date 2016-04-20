@@ -2,6 +2,7 @@ package com.example.dieaigar.vlctour;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.provider.Settings;

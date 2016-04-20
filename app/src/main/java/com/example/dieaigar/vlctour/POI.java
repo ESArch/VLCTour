@@ -8,6 +8,13 @@ public class POI {
     private Double latitud;
     private Double longitud;
 
+    public POI(String nombre, String tipo, Double longitud, Double latitud) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.latitud = latitud;
+        this.longitud = longitud;
+    }
+
     public POI(int imagen, String nombre, String tipo, Double longitud, Double latitud) {
         this.imagen = imagen;
         this.nombre = nombre;

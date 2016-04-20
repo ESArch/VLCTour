@@ -8,15 +8,18 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.MainActivity;
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
@@ -28,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -53,6 +57,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap map;
     Polyline route = null;
     final String directions_API_KEY = "AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0";
+    ArrayList<POI> ruta = new ArrayList<>();
 
     public RoutesFragment() {
 
@@ -65,10 +70,18 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
         MapFragment mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.content_frame, mMapFragment);
+        fragmentTransaction.replace(R.id.content_frame, mMapFragment);
         fragmentTransaction.commit();
 
         mMapFragment.getMapAsync(this);
+
+        /*map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                POI punto = new POI(marker.getTitle(), null, marker.getPosition().longitude, marker.getPosition().latitude);
+                ruta.add(punto);
+            }
+        });*/
 
         return rootView;
     }
@@ -79,26 +92,11 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.482463, -0.346415)).zoom(10).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
-        map.getUiSettings().setZoomControlsEnabled(true);
+        //map.getUiSettings().setZoomControlsEnabled(true);
 
-        new MarkerAsyncTask().execute(this);
-        new RouteAsyncTask().execute();
+        if(ruta.size() == 0) new MarkerAsyncTask().execute(this);
+        else new RouteAsyncTask().execute();
     }
-
-    /*private void addMarkers () {
-        MarkerOptions options = new MarkerOptions();
-        options.position(new LatLng(39.482463, -0.346415));
-        options.title("Lab SDM");
-        options.snippet("UPV, Valencia, Spain");
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        map.addMarker(options);
-
-        options.position(new LatLng(39.482824, -0.347934));
-        options.title("Escuela de Informática UPV");
-        options.snippet("UPV, Valencia, Spain");
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        map.addMarker(options);
-    }*/
 
     private class RouteAsyncTask extends AsyncTask<Double, Void, List<LatLng>> {
 
@@ -176,7 +174,6 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                 options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
                 options.title(pois.get(i).getNombre());
                 //options.snippet(elements[1]);
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 publishProgress(options);
             }
             return null;
@@ -185,11 +182,22 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         @Override
         protected void onProgressUpdate(MarkerOptions... values) {
             super.onProgressUpdate(values);
-            addMarker(values[0]);
+            addWaypointMarker(values[0]);
         }
     }
 
-    private void addMarker(MarkerOptions options) {
+    private void addWaypointMarker(MarkerOptions options) {
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        map.addMarker(options);
+    }
+
+    private void addOriginMarker(MarkerOptions options) {
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        map.addMarker(options);
+    }
+
+    private void addDestinationMarker(MarkerOptions options) {
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         map.addMarker(options);
     }
 }
