@@ -6,9 +6,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -23,7 +26,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
+import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,16 +71,17 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private LocationRequest locationRequest;
     private View view;
     private GoogleApiClient googleApiClient;
+    MySqliteOpenHelper db;
 
     private static final List<String> RESTAURANTS = new ArrayList<String>(Arrays.asList("restaurant"));
     private static final List<String> SHOPPING = new ArrayList<String>(Arrays.asList("department_store", "shopping_mall", "clothing_store", "jewelry_store", "shoe_store"));
     private static final List<String> HOTELS = new ArrayList<String>(Arrays.asList("lodging"));
     private static final List<String> PUB = new ArrayList<String>(Arrays.asList("night_club"));
     private static final List<String> ENTERTAINMENT = new ArrayList<String>(Arrays.asList("movie_theater"));
-    private static final List<String> PARK = new ArrayList<String>(Arrays.asList("park"));
-    private static final List<String> MUSEUM = new ArrayList<String>(Arrays.asList("museum"));
-    private static final List<String> MONUMENT = new ArrayList<String>(Arrays.asList("monument"));
-    private static final List<String> BEACH = new ArrayList<String>(Arrays.asList("beach"));
+    private static final String PARK = "park";
+    private static final String MUSEUM = "museum";
+    private static final String MONUMENT = "monument";
+    private static final String BEACH = "beach";
 
     public NearMeFragment() {
         // Required empty public constructor
@@ -90,6 +96,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 addConnectionCallbacks(this).
                 addApi(LocationServices.API).
                 build();
+
+        db = MySqliteOpenHelper.getInstance(this.getActivity());
 
         //Creating locationRequest
         locationRequest = new LocationRequest();
@@ -221,6 +229,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         map.getUiSettings().setZoomControlsEnabled(true);
 
         currentLocation();
+
+        new databaseAsyncTask().execute();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -242,6 +252,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch(requestCode) {
@@ -256,6 +267,41 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 break;
             default :
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    private class databaseAsyncTask extends AsyncTask<List<String> ,POI, Void> {
+
+        @Override
+        protected Void doInBackground(List<String>... params) {
+            ArrayList<POI> pois = db.getPOIs();
+            for(POI poi : pois) {
+                //TODO check distance too
+                Location poiLocation = new Location("");
+                poiLocation.setLatitude(poi.getLatitud());
+                poiLocation.setLongitude(poi.getLongitud());
+                if(
+                        filters.get(1).contains(poi.getTipo()) &&
+                        userLocation.distanceTo(poiLocation) <= (radius * 1000)
+                  )
+                {
+                    publishProgress(poi);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(POI... values) {
+            addMarker(values[0]);
+            super.onProgressUpdate(values);
+        }
+
+        public void addMarker(POI poi) {
+                MarkerOptions options = new MarkerOptions();
+                options.position(new LatLng(poi.getLatitud(), poi.getLongitud()));
+                options.title(poi.getNombre());
+                map.addMarker(options);
         }
     }
 }

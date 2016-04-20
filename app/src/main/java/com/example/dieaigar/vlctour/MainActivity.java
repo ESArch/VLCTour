@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.dieaigar.vlctour.fragments.NearMeFragment;
@@ -199,23 +200,17 @@ public class MainActivity extends ActionBarActivity {
     public void filterChange(View view) {
         NearMeFragment nearMeFragment = (NearMeFragment) fragment;
 
-        System.out.println("Id recibido: " + view.getId());
-
         if(nearMeFragment.getFilters().get(0).contains(view.getId())) {
-            System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
             nearMeFragment.getFilters().get(1).add(view.getId());
-            System.out.println("Añadido a 0");
+            Log.d("DEBUG","Añadido a 0");
             nearMeFragment.getFilters().get(0).remove(view.getId());
-            System.out.println("Eliminador de 1");
-            System.out.println("0: "+nearMeFragment.getFilters().get(0).contains(view.getId()));
+            Log.d("DEBUG","Eliminado de 1");
         }
         else if(nearMeFragment.getFilters().get(1).contains(view.getId())) {
-            System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
             nearMeFragment.getFilters().get(0).add(view.getId());
-            System.out.println("Añadido a 0");
+            Log.d("DEBUG","Añadido a 0");
             nearMeFragment.getFilters().get(1).remove(view.getId());
-            System.out.println("Eliminador de 1");
-            System.out.println("1: "+nearMeFragment.getFilters().get(1).contains(view.getId()));
+            Log.d("DEBUG","Eliminado de 1");
         }
     }
 }
