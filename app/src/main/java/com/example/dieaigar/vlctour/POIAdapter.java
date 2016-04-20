@@ -46,6 +46,6 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.POIViewHolder> {
     public void onBindViewHolder(POIViewHolder viewHolder, int i) {
         viewHolder.imagen.setImageResource(items.get(i).getImagen());
         viewHolder.nombre.setText(items.get(i).getNombre());
-        viewHolder.descripcion.setText(items.get(i).getDescripcion());
+        viewHolder.descripcion.setText(items.get(i).getTipo());
     }
 }

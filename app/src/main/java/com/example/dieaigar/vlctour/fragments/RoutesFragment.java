@@ -1,6 +1,7 @@
 package com.example.dieaigar.vlctour.fragments;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
@@ -16,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
+import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -73,11 +76,13 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.469684, -0.376326)).zoom(12).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.482463, -0.346415)).zoom(10).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
-        new RouteAsyncTask().execute(); //pinta ruta en el mapa
+
+        new MarkerAsyncTask().execute(this);
+        new RouteAsyncTask().execute();
     }
 
     /*private void addMarkers () {
@@ -153,10 +158,38 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
                 route = map.addPolyline(new PolylineOptions()
                         .addAll(result)
-                        .color(Color.parseColor("#FF0000"))
-                        .width(5)
+                        .color(Color.parseColor("#008000"))
+                        .width(10)
                         .geodesic(true));
             }
         }
+    }
+
+    private class MarkerAsyncTask extends AsyncTask<RoutesFragment, MarkerOptions, Void> {
+        @Override
+        protected Void doInBackground(RoutesFragment... params) {
+            MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(params[0].getActivity());
+            ArrayList<POI> pois = db.getPOIs();
+
+            for(int i=0;i<pois.size();i++) {
+                MarkerOptions options = new MarkerOptions();
+                options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
+                options.title(pois.get(i).getNombre());
+                //options.snippet(elements[1]);
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                publishProgress(options);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(MarkerOptions... values) {
+            super.onProgressUpdate(values);
+            addMarker(values[0]);
+        }
+    }
+
+    private void addMarker(MarkerOptions options) {
+        map.addMarker(options);
     }
 }
