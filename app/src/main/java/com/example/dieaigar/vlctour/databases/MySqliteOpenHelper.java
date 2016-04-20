@@ -64,7 +64,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         BufferedReader br = null;
         try {
 
-            br = new BufferedReader(new InputStreamReader(csvFile));
+            br = new BufferedReader(new InputStreamReader(csvFile, "UTF-8"));
             while ((line = br.readLine()) != null) {
 
                 String[] items = line.split(cvsSplitBy);
@@ -76,7 +76,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
                 String[] coord = aux.split(" ");
 
                 addPOI(items[0], items[1], Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), db);
-                System.out.println(items[0]);
 
             }
 
