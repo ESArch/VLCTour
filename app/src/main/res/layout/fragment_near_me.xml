@@ -1,13 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dieaigar.vlctour.fragments.NearMeFragment">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar">
+    </include>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentBottom="true">
 
         <fragment
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,6 +34,7 @@
             android:progress="0"
             android:indeterminate="false" />
 
+        <!-- TODO por que no funciona el scroll? -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -39,91 +47,109 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:layout_gravity="center">
-                <!-- shopping -->
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/shopping"
-                    android:background="@drawable/ic_commerce"
-                    android:layout_gravity="center"
-                    android:onClick="filterChange"
-                    android:layout_weight="1" />
-                <!-- pub -->
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pub"
-                    android:background="@drawable/ic_food"
-                    android:layout_gravity="center"
-                    android:onClick="filterChange"
-                    android:layout_weight="1" />
                 <!-- entertainment -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/entertainment"
                     android:background="@drawable/ic_entertainment"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
                 <!-- hotels -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/hotels"
-                    android:background="@drawable/ic_sleeping"
+                    android:background="@drawable/ic_hotel"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
                 <!-- restaurant -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/restaurant"
                     android:background="@drawable/ic_restaurant"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
                 <!-- park -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/park"
-                    android:background="@drawable/ic_monuments"
+                    android:background="@drawable/ic_park"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
                 <!-- museum -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/museum"
-                    android:background="@drawable/ic_monuments"
+                    android:background="@drawable/ic_museum"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
                 <!-- monument -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/monument"
-                    android:background="@drawable/ic_monuments"
+                    android:background="@drawable/ic_monument"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
                 <!-- beach -->
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/beach"
-                    android:background="@drawable/ic_monuments"
+                    android:background="@drawable/ic_beach"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+                <!-- shopping -->
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/shopping"
+                    android:background="@drawable/ic_shopping"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+                <!-- pub -->
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/pub"
+                    android:background="@drawable/ic_pub"
+                    android:layout_gravity="center"
+                    android:onClick="filterChange"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
 
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>
