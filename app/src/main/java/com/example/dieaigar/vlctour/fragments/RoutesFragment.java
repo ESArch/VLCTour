@@ -1,6 +1,7 @@
 package com.example.dieaigar.vlctour.fragments;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
@@ -80,18 +81,8 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         map.setBuildingsEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
 
-        MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(this.getActivity());
-        ArrayList<POI> pois = db.getPOIs();
-        for(int i=0;i<pois.size();i++) {
-            MarkerOptions options = new MarkerOptions();
-            options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
-            options.title(pois.get(i).getNombre());
-            //options.snippet(elements[1]);
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-            map.addMarker(options);
-        }
-
-        new RouteAsyncTask().execute(); //pinta ruta en el mapa
+        new MarkerAsyncTask().execute(this);
+        new RouteAsyncTask().execute();
     }
 
     /*private void addMarkers () {
@@ -172,5 +163,33 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                         .geodesic(true));
             }
         }
+    }
+
+    private class MarkerAsyncTask extends AsyncTask<RoutesFragment, MarkerOptions, Void> {
+        @Override
+        protected Void doInBackground(RoutesFragment... params) {
+            MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(params[0].getActivity());
+            ArrayList<POI> pois = db.getPOIs();
+
+            for(int i=0;i<pois.size();i++) {
+                MarkerOptions options = new MarkerOptions();
+                options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
+                options.title(pois.get(i).getNombre());
+                //options.snippet(elements[1]);
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                publishProgress(options);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(MarkerOptions... values) {
+            super.onProgressUpdate(values);
+            addMarker(values[0]);
+        }
+    }
+
+    private void addMarker(MarkerOptions options) {
+        map.addMarker(options);
     }
 }
