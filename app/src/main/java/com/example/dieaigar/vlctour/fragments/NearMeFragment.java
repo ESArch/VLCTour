@@ -72,7 +72,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private static final List<String> HOTELS = new ArrayList<String>(Arrays.asList("lodging"));
     private static final List<String> PUB = new ArrayList<String>(Arrays.asList("night_club"));
     private static final List<String> ENTERTAINMENT = new ArrayList<String>(Arrays.asList("movie_theater"));
-    private static final List<String> PARK = new ArrayList<String>(Arrays.asList("park", "museum", "monument", "beach"));
+    private static final List<String> PARK = new ArrayList<String>(Arrays.asList("park"));
     private static final List<String> MUSEUM = new ArrayList<String>(Arrays.asList("museum"));
     private static final List<String> MONUMENT = new ArrayList<String>(Arrays.asList("monument"));
     private static final List<String> BEACH = new ArrayList<String>(Arrays.asList("beach"));
