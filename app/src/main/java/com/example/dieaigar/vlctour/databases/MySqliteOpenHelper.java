@@ -70,8 +70,9 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
                 String[] items = line.split(cvsSplitBy);
                 String aux = items[2];
                 aux = aux.substring(6);
-                System.out.println(aux);
+                //System.out.println(aux);
                 aux = aux.substring(0, aux.length()-1);
+                //System.out.println(aux);
                 String[] coord = aux.split(" ");
 
                 addPOI(items[0], items[1], Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), db);
