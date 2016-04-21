@@ -198,6 +198,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void filterChange(View view) {
+        //TODO mostrar u ocultar en el mapa el marker.
         NearMeFragment nearMeFragment = (NearMeFragment) fragment;
         Log.d("filterChange1Before",nearMeFragment.getFilters().get(1).toString());
         Log.d("filterChange0Before",nearMeFragment.getFilters().get(0).toString());

@@ -31,7 +31,7 @@
             android:id="@+id/radius"
             android:layout_weight="5"
             android:max="10"
-            android:thumbTint="@color/ColorPrimary"
+            android:thumbTint="@color/ColorPrimaryDark"
             android:progressTint="@color/ColorPrimary"
             android:progress="0"
             android:indeterminate="false" />

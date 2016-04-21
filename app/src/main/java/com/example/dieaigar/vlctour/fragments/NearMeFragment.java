@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,8 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,11 +55,19 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class NearMeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
@@ -123,6 +134,22 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     @Override
+    public void onPause() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("radius", seekBar.getProgress());
+        editor.apply();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        seekBar.setProgress(preferences.getInt("radius", 1000));
+        super.onResume();
+    }
+
+    @Override
     public void onStop() {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
         googleApiClient.disconnect();
@@ -133,6 +160,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onLocationChanged(Location location) {
         userLocation = location;
         updateUI();
+        new googleAPIAsyncTask().execute();
     }
 
     @Override
@@ -287,15 +315,14 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         this.filters = filters;
     }
 
-    public void updateMap() {
-
-    }
-
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.469684, -0.376326)).zoom(12).build();
+        userLocation = new Location("");
+        userLocation.setLatitude(39.469684);
+        userLocation.setLongitude(-0.376326);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude())).zoom(12).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
@@ -304,7 +331,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         //TODO descomentar
         //new databaseAsyncTask().execute();
-        //new googleAPIAsyncTask().execute();
+        new googleAPIAsyncTask().execute();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -354,10 +381,39 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         @Override
         protected Void doInBackground(List<String>... params) {
+
             String uri = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                     "location="+userLocation.getLatitude()+","+userLocation.getLongitude()+
                     "&radius="+radius*1000+"&types=" +  types +
-                    "&key=AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0");
+                    "&key=AIzaSyBxixEz7l6vZA8Pj4dWqHxN1Y7OVBLdBiE");
+
+            try {
+                URL url = new URL(uri);
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+
+                if (connection.getResponseCode() < 300) {
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    Log.d("response", response.toString());
+                }
+            } catch (MalformedURLException e) {
+                Log.e("googleAPIAsyncTaskERROR","URL errónea");
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                Log.e("googleAPIAsyncTaskERROR","Error de protocolo");
+                e.printStackTrace();
+            } catch (IOException e) {
+                Log.e("googleAPIAsyncTaskERROR","Excepcion I/O");
+                e.printStackTrace();
+            }
             return null;
         }
 
