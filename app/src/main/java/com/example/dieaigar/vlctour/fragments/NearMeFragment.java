@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +63,11 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
+    ImageButton enternainmentButton, hotelButton, restaurantButton, parkButton, museumButton, monumentButton, beachButton, shoppingButton, pubButton;
     private SeekBar seekBar;
     private GoogleMap map;
     private double radius;
-    private Map<Integer, List<Integer>> filters = new HashMap<Integer, List<Integer>>(0);
+    private Map<Integer, List<String>> filters = new HashMap<Integer, List<String>>(0);
     private MapFragment mapFragment;
     private Location userLocation;
     private LocationRequest locationRequest;
@@ -73,11 +75,13 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private GoogleApiClient googleApiClient;
     MySqliteOpenHelper db;
 
-    private static final List<String> RESTAURANTS = new ArrayList<String>(Arrays.asList("restaurant"));
-    private static final List<String> SHOPPING = new ArrayList<String>(Arrays.asList("department_store", "shopping_mall", "clothing_store", "jewelry_store", "shoe_store"));
-    private static final List<String> HOTELS = new ArrayList<String>(Arrays.asList("lodging"));
-    private static final List<String> PUB = new ArrayList<String>(Arrays.asList("night_club"));
-    private static final List<String> ENTERTAINMENT = new ArrayList<String>(Arrays.asList("movie_theater"));
+    List<String> googleAPIFilters;
+
+    private static final List<String> restaurant = new ArrayList<String>(Arrays.asList("restaurant"));
+    private static final List<String> shopping = new ArrayList<String>(Arrays.asList("department_store", "shopping_mall", "clothing_store", "jewelry_store", "shoe_store"));
+    private static final List<String> hotel = new ArrayList<String>(Arrays.asList("lodging"));
+    private static final List<String> pub = new ArrayList<String>(Arrays.asList("night_club"));
+    private static final List<String> entertainment = new ArrayList<String>(Arrays.asList("movie_theater"));
     private static final String PARK = "park";
     private static final String MUSEUM = "museum";
     private static final String MONUMENT = "monument";
@@ -97,6 +101,10 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 addApi(LocationServices.API).
                 build();
 
+        //Creating googleAPI filters
+        googleAPIFilters = new ArrayList<String>(0);
+
+        //Obtain instane to acces db
         db = MySqliteOpenHelper.getInstance(this.getActivity());
 
         //Creating locationRequest
@@ -104,6 +112,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setSmallestDisplacement(50);
         super.onCreate(savedInstanceState);
     }
 
@@ -153,23 +162,36 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         //Set variables
         seekBar = (SeekBar) view.findViewById(R.id.radius);
         radius = 0.0;
-        filters.put(0, new ArrayList<Integer>(0));
-        filters.put(1, new ArrayList<Integer>(0));
+        filters.put(0, new ArrayList<String>(0));
+        filters.put(1, new ArrayList<String>(0));
+        hotelButton = (ImageButton) view.findViewById(R.id.hotel);
+        enternainmentButton = (ImageButton) view.findViewById(R.id.entertainment);
+        restaurantButton = (ImageButton) view.findViewById(R.id.restaurant);
+        parkButton = (ImageButton) view.findViewById(R.id.park);
+        museumButton = (ImageButton) view.findViewById(R.id.museum);
+        monumentButton = (ImageButton) view.findViewById(R.id.monument);
+        beachButton = (ImageButton) view.findViewById(R.id.beach);
+        shoppingButton = (ImageButton) view.findViewById(R.id.shopping);
+        pubButton = (ImageButton) view.findViewById(R.id.pub);
+
+
 
         //Calling the map
         mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.nearMeMap);
         mapFragment.getMapAsync(NearMeFragment.this);
 
         //All filters selected initially
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.pub)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.shopping)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.hotels)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.restaurant)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.entertainment)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.museum)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.park)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.monument)).getId());
-        filters.get(1).add(((ImageButton) view.findViewById(R.id.beach)).getId());
+        filters.get(1).add(getResources().getResourceEntryName(R.id.pub));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.shopping));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.hotel));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.restaurant));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.entertainment));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.museum));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.park));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.monument));
+        filters.get(1).add(getResources().getResourceEntryName(R.id.beach));
+        Log.d("filtersContent1",filters.get(1).toString());
+        Log.d("filtersContent0",filters.get(0).toString());
 
         //Radius
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -199,6 +221,56 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         return view;
     }
 
+    public void changeColor(String name, int number) {
+        switch(name) {
+            case "pub" :
+                if(1 == number)  {
+                    pubButton.setBackground(getResources().getDrawable(R.drawable.ic_pub_selected)); }
+                else { pubButton.setBackground(getResources().getDrawable(R.drawable.ic_pub)); }
+                break;
+            case "shopping" :
+                if(1 == number)  {
+                    shoppingButton.setBackground(getResources().getDrawable(R.drawable.ic_shopping_selected)); }
+                else { shoppingButton.setBackground(getResources().getDrawable(R.drawable.ic_shopping)); }
+                break;
+            case "hotel" :
+                if(1 == number)  {
+                    hotelButton.setBackground(getResources().getDrawable(R.drawable.ic_hotel_selected)); }
+                else { hotelButton.setBackground(getResources().getDrawable(R.drawable.ic_hotel)); }
+                break;
+            case "restaurant" :
+                if(1 == number)  {
+                    restaurantButton.setBackground(getResources().getDrawable(R.drawable.ic_restaurant_selected)); }
+                else { restaurantButton.setBackground(getResources().getDrawable(R.drawable.ic_restaurant)); }
+                break;
+            case "entertainment" :
+                if(1 == number)  {
+                    enternainmentButton.setBackground(getResources().getDrawable(R.drawable.ic_entertainment_selected)); }
+                else { enternainmentButton.setBackground(getResources().getDrawable(R.drawable.ic_entertainment)); }
+                break;
+            case "museum" :
+                if(1 == number)  {
+                    museumButton.setBackground(getResources().getDrawable(R.drawable.ic_museum_selected)); }
+                else { museumButton.setBackground(getResources().getDrawable(R.drawable.ic_museum)); }
+                break;
+            case "park" :
+                if(1 == number)  {
+                    parkButton.setBackground(getResources().getDrawable(R.drawable.ic_park_selected)); }
+                else { parkButton.setBackground(getResources().getDrawable(R.drawable.ic_park)); }
+                break;
+            case "monument" :
+                if(1 == number)  {
+                    monumentButton.setBackground(getResources().getDrawable(R.drawable.ic_monument_selected)); }
+                else { monumentButton.setBackground(getResources().getDrawable(R.drawable.ic_monument)); }
+                break;
+            case "beach" :
+                if(1 == number)  {
+                    beachButton.setBackground(getResources().getDrawable(R.drawable.ic_beach_selected)); }
+                else { beachButton.setBackground(getResources().getDrawable(R.drawable.ic_beach)); }
+                break;
+        }
+    }
+
     public double getRadius() {
         return radius;
     }
@@ -207,11 +279,11 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         this.radius = radius;
     }
 
-    public Map<Integer, List<Integer>> getFilters() {
+    public Map<Integer, List<String>> getFilters() {
         return filters;
     }
 
-    public void setFilters(Map<Integer, List<Integer>> filters) {
+    public void setFilters(Map<Integer, List<String>> filters) {
         this.filters = filters;
     }
 
@@ -230,7 +302,9 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         currentLocation();
 
-        new databaseAsyncTask().execute();
+        //TODO descomentar
+        //new databaseAsyncTask().execute();
+        //new googleAPIAsyncTask().execute();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -242,8 +316,6 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         }
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
-
-        //updateUI();
     }
 
     public void updateUI() {
@@ -251,7 +323,6 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude())).zoom(12).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -270,13 +341,72 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         }
     }
 
+    private class googleAPIAsyncTask extends AsyncTask<List<String>, Void, Void> {
+
+        String types = "";
+
+        @Override
+        protected void onPreExecute() {
+
+            types = buildTypes();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(List<String>... params) {
+            String uri = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                    "location="+userLocation.getLatitude()+","+userLocation.getLongitude()+
+                    "&radius="+radius*1000+"&types=" +  types +
+                    "&key=AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0");
+            return null;
+        }
+
+        public void setGoogleAPIFilters() {
+
+            for(String type : filters.get(1)) {
+                switch (type) {
+                    case "restaurant" :
+                        googleAPIFilters.addAll(restaurant);
+                        break;
+                    case "shopping" :
+                        googleAPIFilters.addAll(shopping);
+                        break;
+                    case "hotel" :
+                        googleAPIFilters.addAll(hotel);
+                        break;
+                    case "pub" :
+                        googleAPIFilters.addAll(pub);
+                        break;
+                    case "entertainment" :
+                        googleAPIFilters.addAll(entertainment);
+                        break;
+                }
+            }
+            Log.d("googleAPIFilters",googleAPIFilters.toString());
+        }
+
+        public String buildTypes() {
+
+            setGoogleAPIFilters();
+
+            StringBuilder sb = new StringBuilder();
+            String prefix = "";
+            for(String string : googleAPIFilters) {
+                sb.append(prefix);
+                prefix = "|";
+                sb.append(string);
+            }
+            Log.d("googleAPI call list", sb.toString());
+            return sb.length() == 0 ? "" : sb.toString();
+        }
+    }
+
     private class databaseAsyncTask extends AsyncTask<List<String> ,POI, Void> {
 
         @Override
         protected Void doInBackground(List<String>... params) {
             ArrayList<POI> pois = db.getPOIs();
             for(POI poi : pois) {
-                //TODO check distance too
                 Location poiLocation = new Location("");
                 poiLocation.setLatitude(poi.getLatitud());
                 poiLocation.setLongitude(poi.getLongitud());

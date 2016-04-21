@@ -31,6 +31,8 @@
             android:id="@+id/radius"
             android:layout_weight="5"
             android:max="10"
+            android:thumbTint="@color/ColorPrimary"
+            android:progressTint="@color/ColorPrimary"
             android:progress="0"
             android:indeterminate="false" />
 
@@ -59,11 +61,11 @@
                     android:layout_weight="1"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp" />
-                <!-- hotels -->
+                <!-- hotel -->
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id="@+id/hotels"
+                    android:id="@+id/hotel"
                     android:background="@drawable/ic_hotel_selected"
                     android:layout_gravity="center"
                     android:onClick="filterChange"
