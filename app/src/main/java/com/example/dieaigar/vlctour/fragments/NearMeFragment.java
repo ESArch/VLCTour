@@ -69,7 +69,8 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-
+//TODO guardar el resultado de google placse api en una lista, trabajar sobre la lista con los filtros. Siempre se importa todo, se trabaja sobre la lista,
+//TODO solo se llama a la api de google al cambiar de posicion
 public class NearMeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -123,7 +124,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setSmallestDisplacement(50);
+        locationRequest.setSmallestDisplacement(100);
         super.onCreate(savedInstanceState);
     }
 
@@ -160,6 +161,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onLocationChanged(Location location) {
         userLocation = location;
         updateUI();
+        new databaseAsyncTask().execute();
         new googleAPIAsyncTask().execute();
     }
 
@@ -189,7 +191,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         //Set variables
         seekBar = (SeekBar) view.findViewById(R.id.radius);
-        radius = 0.0;
+        radius = 0;
         filters.put(0, new ArrayList<String>(0));
         filters.put(1, new ArrayList<String>(0));
         hotelButton = (ImageButton) view.findViewById(R.id.hotel);
@@ -228,7 +230,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                radius = (progress / 2.0);
+                radius = (progress / 2.0) * 1000;
             }
 
             @Override
@@ -241,7 +243,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 if (toast != null) {
                     toast.cancel();
                 }
-                toast = Toast.makeText(getActivity(), "Radius: " + radius + "Km.", Toast.LENGTH_SHORT);
+                toast = Toast.makeText(getActivity(), "Radius: " + radius + "m.", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
@@ -329,8 +331,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         currentLocation();
 
-        //TODO descomentar
-        //new databaseAsyncTask().execute();
+        new databaseAsyncTask().execute();
         new googleAPIAsyncTask().execute();
     }
 
@@ -384,7 +385,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
             String uri = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                     "location="+userLocation.getLatitude()+","+userLocation.getLongitude()+
-                    "&radius="+radius*1000+"&types=" +  types +
+                    "&radius="+radius+"&types=" +  types +
                     "&key=AIzaSyBxixEz7l6vZA8Pj4dWqHxN1Y7OVBLdBiE");
 
             try {
@@ -468,7 +469,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 poiLocation.setLongitude(poi.getLongitud());
                 if(
                         filters.get(1).contains(poi.getTipo()) &&
-                        userLocation.distanceTo(poiLocation) <= (radius * 1000)
+                        userLocation.distanceTo(poiLocation) <= (radius)
                   )
                 {
                     publishProgress(poi);
@@ -484,10 +485,24 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         }
 
         public void addMarker(POI poi) {
-                MarkerOptions options = new MarkerOptions();
-                options.position(new LatLng(poi.getLatitud(), poi.getLongitud()));
-                options.title(poi.getNombre());
-                map.addMarker(options);
+            MarkerOptions options = new MarkerOptions();
+            options.position(new LatLng(poi.getLatitud(), poi.getLongitud()));
+            options.title(poi.getNombre());
+            switch (poi.getTipo()) {
+                case "museum" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_museum));
+                    break;
+                case "park" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park));
+                    break;
+                case "monument" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_monument));
+                    break;
+                case "beach" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_beach));
+                    break;
+            }
+            map.addMarker(options);
         }
     }
 }
