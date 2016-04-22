@@ -73,8 +73,9 @@ Declarar instancias globales
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-        adapter = new POIAdapter(items);
+        adapter = new POIAdapter(getActivity(),items);
         recycler.setAdapter(adapter);
+
 
         //Set click en la imagen
         /*RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.individual_poi_layout);
