@@ -193,36 +193,31 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
     private class MarkerAsyncTask extends AsyncTask<RoutesFragment, MarkerOptions, Void> {
 
-        int index;
+        HashMap<MarkerOptions, POI> hashMap;
 
         @Override
         protected Void doInBackground(RoutesFragment... params) {
             MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(params[0].getActivity());
             pois = db.getPOIs();
+            hashMap = new HashMap<>();
             for(int i=0;i<pois.size();i++) {
-                setIndex(i);
+                POI poi = pois.get(i);
                 Log.d("Routes debug", pois.get(i).toString());
                 MarkerOptions options = new MarkerOptions();
-                options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
-                options.title(pois.get(i).getNombre());
+                options.position(new LatLng(poi.getLatitud(), poi.getLongitud()));
+                options.title(poi.getNombre());
+                hashMap.put(options, poi);
                 publishProgress(options);
 //                addWaypointMarker(options, pois.get(i));
             }
             return null;
         }
 
+
         @Override
         protected void onProgressUpdate(MarkerOptions... values) {
             super.onProgressUpdate(values);
-            addWaypointMarker(values[0], pois.get(getIndex()));
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
+            addWaypointMarker(values[0], hashMap.get(values[0]));
         }
     }
 
