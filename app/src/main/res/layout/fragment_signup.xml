@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ColorDark">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:id="@+id/etUsernameRegister"
+            android:hint="USERNAME"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:background="@color/ColorDarkHighlight"
+            android:textColorHint="@color/ColorDarkText"
+            android:textColor="#FFFFFF"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:id="@+id/etEmailRegister"
+            android:hint="EMAIL"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:background="@color/ColorDarkHighlight"
+            android:textColorHint="@color/ColorDarkText"
+            android:textColor="#FFFFFF"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/etPasswordRegister"
+            android:hint="PASSWORD"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:background="@color/ColorDarkHighlight"
+            android:textColorHint="@color/ColorDarkText"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="REGISTER"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:background="@color/ColorPrimary"
+            android:id="@+id/btRegister"
+            android:textColor="@color/ColorLightText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="32dp"
+            android:text="Already registered! Login Me."
+            android:id="@+id/tvToSignIn"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/ColorLightText"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

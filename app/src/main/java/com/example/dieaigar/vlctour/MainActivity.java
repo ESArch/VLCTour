@@ -26,6 +26,8 @@ import com.example.dieaigar.vlctour.fragments.NearMeFragment;
 import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
 import com.example.dieaigar.vlctour.fragments.ListRoutesFragment;
+import com.example.dieaigar.vlctour.fragments.SignInFragment;
+import com.example.dieaigar.vlctour.fragments.SignUpFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
@@ -35,8 +37,8 @@ public class MainActivity extends ActionBarActivity {
     //First We Declare Titles And Icons For Our Navigation Drawer List View
     //This Icons And Titles Are holded in an Array as you can see
 
-    String TITLES[] = {"Home","Near me","What to see","Routes"};
-    int ICONS[] = {R.drawable.ic_home,R.drawable.ic_near,R.drawable.ic_pois,R.drawable.ic_routes};
+    String TITLES[] = {"Home","Near me","What to see","Routes", "Sign in"};
+    int ICONS[] = {R.drawable.ic_home,R.drawable.ic_near,R.drawable.ic_pois,R.drawable.ic_routes, R.drawable.ic_login};
 
     Fragment fragment = null;
 
@@ -114,6 +116,9 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case 4:
                             fragment = new ListRoutesFragment();
+                            break;
+                        case 5:
+                            fragment = new SignInFragment();
                             break;
                     }
 
@@ -218,5 +223,10 @@ public class MainActivity extends ActionBarActivity {
         }
         Log.d("filterChange1After",nearMeFragment.getFilters().get(1).toString());
         Log.d("filterChange0After",nearMeFragment.getFilters().get(0).toString());
+    }
+
+    public void login(String username, String email){
+        NAME = username;
+        mAdapter.notifyDataSetChanged();
     }
 }
