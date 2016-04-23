@@ -51,6 +51,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, longitud DOUBLE NOT NULL, latitud DOUBLE NOT NULL);");
+            db.execSQL("CREATE TABLE routes (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, distancia DOUBLE NOT NULL;");
             parsecsv(db);
         }catch(SQLException e){e.printStackTrace();}
     }
@@ -109,9 +110,25 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     public ArrayList<POI> getPOIs() {
 
         ArrayList<POI> result = new ArrayList<>();
-        ArrayList<String> item;
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query("pois", new String[]{"id", "nombre", "tipo", "longitud", "latitud"}, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+
+            POI p = new POI(0,cursor.getInt(0),cursor.getString(1),cursor.getString(2), cursor.getDouble(3), cursor.getDouble(4));
+            result.add(p);
+        }
+
+        cursor.close();
+        database.close();
+        return result;
+    }
+
+    public ArrayList<POI> getRoutes() {
+
+        ArrayList<POI> result = new ArrayList<>();
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.query("routes", new String[]{"id", "nombre", "tipo", "distancia"}, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
 

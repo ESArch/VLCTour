@@ -84,23 +84,17 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         //mMapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
 
         mMapFragment.getMapAsync(this);
-        setHasOptionsMenu(true);
 
         return rootView;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_save, menu);
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.482463, -0.346415)).zoom(10).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.463824, -0.358462)).zoom(13).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
-        map.getUiSettings().setZoomControlsEnabled(true);
+        map.setBuildingsEnabled(true);
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
