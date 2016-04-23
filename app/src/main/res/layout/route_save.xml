@@ -12,15 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
         android:id="@+id/editText"
+        android:hint="Route Name"
         android:layout_marginLeft="17dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="21dp"
         android:layout_below="@+id/tool_bar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/checkBox4"
+        android:layout_alignEnd="@+id/checkBox4" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -46,33 +47,31 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gardens"
+        android:text="Parks"
         android:id="@+id/checkBox3"
+        android:checked="false"
         android:layout_below="@+id/checkBox4"
-        android:layout_toRightOf="@+id/editText"
-        android:layout_alignRight="@+id/checkBox4"
-        android:layout_alignEnd="@+id/checkBox4"
-        android:checked="false" />
+        android:layout_alignLeft="@+id/checkBox4"
+        android:layout_alignStart="@+id/checkBox4" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Beaches"
         android:id="@+id/checkBox4"
-        android:layout_alignTop="@+id/checkBox"
-        android:layout_toRightOf="@+id/editText"
         android:checked="false"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/checkBox"
+        android:layout_toRightOf="@+id/button_save"
+        android:layout_toEndOf="@+id/button_save" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Route"
-        android:id="@+id/button"
+        android:id="@+id/button_save"
         android:layout_marginBottom="24dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Save Route" />
 
 
 </RelativeLayout>

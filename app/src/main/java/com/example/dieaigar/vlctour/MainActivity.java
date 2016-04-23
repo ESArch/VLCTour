@@ -28,6 +28,7 @@ import com.example.dieaigar.vlctour.fragments.RoutesFragment;
 import com.example.dieaigar.vlctour.fragments.ListRoutesFragment;
 import com.example.dieaigar.vlctour.fragments.SignInFragment;
 import com.example.dieaigar.vlctour.fragments.SignUpFragment;
+import com.example.dieaigar.vlctour.fragments.SaveRouteFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 

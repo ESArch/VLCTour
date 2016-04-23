@@ -7,12 +7,21 @@ public class POI {
     private String tipo;
     private Double latitud;
     private Double longitud;
+    private int id;
 
     public POI(String nombre, String tipo, Double longitud, Double latitud) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.latitud = latitud;
         this.longitud = longitud;
+    }
+
+    public POI(String nombre, String tipo, Double longitud, Double latitud, int id) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.id = id;
     }
 
     public POI(int imagen, String nombre, String tipo, Double longitud, Double latitud) {
@@ -23,9 +32,7 @@ public class POI {
         this.longitud = longitud;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() {return nombre;}
 
     public String getTipo() {
         return tipo;
@@ -38,4 +45,6 @@ public class POI {
     public Double getLatitud() {return latitud;}
 
     public Double getLongitud() {return  longitud;}
+
+    public int getId() {return id;}
 }
