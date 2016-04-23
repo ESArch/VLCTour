@@ -322,9 +322,9 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         userLocation = new Location("");
-        userLocation.setLatitude(39.469684);
-        userLocation.setLongitude(-0.376326);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude())).zoom(12).build();
+        userLocation.setLatitude(39.463824);
+        userLocation.setLongitude(-0.358462);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude())).zoom(13).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
