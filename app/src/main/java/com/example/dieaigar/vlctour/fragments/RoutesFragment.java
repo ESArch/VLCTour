@@ -58,6 +58,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
+    MapFragment mMapFragment;
     GoogleMap map;
     Polyline route = null;
     final String directions_API_KEY = "AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0";
@@ -74,10 +75,13 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
         getActivity().setTitle("Route Map");
 
-        MapFragment mMapFragment = MapFragment.newInstance();
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, mMapFragment);
+
+        mMapFragment = MapFragment.newInstance();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.map_container, mMapFragment);
         fragmentTransaction.commit();
+
+        //mMapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
 
         mMapFragment.getMapAsync(this);
         setHasOptionsMenu(true);
