@@ -69,7 +69,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-//TODO guardar el resultado de google placse api en una lista, trabajar sobre la lista con los filtros. Siempre se importa todo, se trabaja sobre la lista,
+//TODO guardar el resultado de google places api en una lista, trabajar sobre la lista con los filtros. Siempre se importa todo, se trabaja sobre la lista,
 //TODO solo se llama a la api de google al cambiar de posicion
 public class NearMeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -116,7 +116,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         //Creating googleAPI filters
         googleAPIFilters = new ArrayList<String>(0);
 
-        //Obtain instane to acces db
+        //Obtain instance to access db
         db = MySqliteOpenHelper.getInstance(this.getActivity());
 
         //Creating locationRequest

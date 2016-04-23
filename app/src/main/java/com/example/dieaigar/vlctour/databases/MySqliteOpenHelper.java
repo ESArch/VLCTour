@@ -44,17 +44,25 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
     public MySqliteOpenHelper(Context context) {
         super(context, "database_file", null, 1);
-        this.context=context;
+        this.context = context;
     }
 
-
-    //onCreate
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, longitud DOUBLE NOT NULL, latitud DOUBLE NOT NULL);");
             parsecsv(db);
         }catch(SQLException e){e.printStackTrace();}
+    }
+
+    public POI getById(int id) {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.query("pois", new String[]{"id", "nombre", "tipo", "longitud", "latitud"}, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        POI p = new POI(cursor.getString(0), cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4));
+        cursor.close();
+        database.close();
+        System.out.println(p.getNombre());
+        return p;
     }
 
     private void parsecsv(SQLiteDatabase db){
@@ -95,18 +103,15 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    //onUpgrade, not really needed
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  }
 
-
-    //get scores from database
     public ArrayList<POI> getPOIs() {
 
         ArrayList<POI> result = new ArrayList<>();
         ArrayList<String> item;
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query("pois", new String[]{"nombre", "tipo", "longitud", "latitud"}, null, null, null, null, null);
+        Cursor cursor = database.query("pois", new String[]{"id", "nombre", "tipo", "longitud", "latitud"}, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
 
@@ -119,9 +124,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    //adding a score to the database
     public void addPOI(String nombre, String tipo, Double longitud, Double latitud) {
-
         SQLiteDatabase database = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
@@ -132,22 +135,12 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-    //adding a score to the database
     public void addPOI(String nombre, String tipo, Double longitud, Double latitud, SQLiteDatabase db) {
-
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("tipo", tipo);
         values.put("longitud", longitud);
         values.put("latitud", latitud);
         db.insert("pois", null, values);
-    }
-
-    //deletes everything in the database
-    public void deleteAllScores() {
-
-        SQLiteDatabase database = getWritableDatabase();
-        database.delete("pois", null, null);
-        database.close();
     }
 }

@@ -26,6 +26,7 @@ import com.example.dieaigar.vlctour.fragments.NearMeFragment;
 import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
 import com.example.dieaigar.vlctour.fragments.ListRoutesFragment;
+import com.example.dieaigar.vlctour.fragments.SaveRouteFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
@@ -61,9 +62,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    /* Assinging the toolbar object ot the view
-    and setting the the Action bar to our toolbar
-     */
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
@@ -91,7 +89,6 @@ public class MainActivity extends ActionBarActivity {
 
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-
             @Override
             public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());

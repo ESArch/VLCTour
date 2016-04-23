@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -47,6 +50,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,6 +62,8 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     Polyline route = null;
     final String directions_API_KEY = "AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0";
     ArrayList<POI> ruta = new ArrayList<>();
+    HashMap<Marker, POI> hash = new HashMap<>();
+    ArrayList<POI> pois;
 
     public RoutesFragment() {
 
@@ -74,16 +80,14 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         fragmentTransaction.commit();
 
         mMapFragment.getMapAsync(this);
-
-        /*map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                POI punto = new POI(marker.getTitle(), null, marker.getPosition().longitude, marker.getPosition().latitude);
-                ruta.add(punto);
-            }
-        });*/
+        setHasOptionsMenu(true);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_save, menu);
     }
 
     @Override
@@ -92,7 +96,15 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.482463, -0.346415)).zoom(10).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
-        //map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                POI punto = hash.get(marker);
+                ruta.add(punto);
+                System.out.println("("+punto.getId()+") "+marker.getTitle()+": "+marker.getPosition().latitude+", "+marker.getPosition().longitude);
+            }
+        });
 
         if(ruta.size() == 0) new MarkerAsyncTask().execute(this);
         else new RouteAsyncTask().execute();
@@ -105,9 +117,25 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
             List<LatLng> pointsList = null;
 
-            String uri = String.format("https://maps.googleapis.com/maps/api/directions/json?" +
-                    "origin=39.482463,-0.346415&destination=43.361161,-8.445140&waypoints=Cádiz&mode=driving&" +
-                    "key="+directions_API_KEY);
+            Uri.Builder uriBuilder = new Uri.Builder();
+            uriBuilder.scheme("https");
+            uriBuilder.authority("maps.googleapis.com");
+            uriBuilder.appendPath("maps");
+            uriBuilder.appendPath("api");
+            uriBuilder.appendPath("directions");
+            uriBuilder.appendPath("json");
+            uriBuilder.appendQueryParameter("origin", ruta.get(0).getLatitud() + "," + ruta.get(0).getLongitud());
+            uriBuilder.appendQueryParameter("destination", ruta.get(ruta.size()-1).getLatitud()+","+ruta.get(ruta.size()-1).getLongitud());
+            uriBuilder.appendQueryParameter("waypoints", "");
+            String uri = uriBuilder.build().toString();
+            for(int i=1; i<ruta.size()-1; i++) {
+                uri += ruta.get(i).getLatitud() + "," + ruta.get(i).getLongitud();
+                if(i != ruta.size()-2) uri += "|";
+            }
+
+            uri += "&key="+directions_API_KEY;
+
+            System.out.println(uri);
 
             try {
                 URL url = new URL(uri);
@@ -163,41 +191,36 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private class MarkerAsyncTask extends AsyncTask<RoutesFragment, MarkerOptions, Void> {
+    private class MarkerAsyncTask extends AsyncTask<RoutesFragment, Void, Void> {
         @Override
         protected Void doInBackground(RoutesFragment... params) {
-            MySqliteOpenHelper db =  MySqliteOpenHelper.getInstance(params[0].getActivity());
-            ArrayList<POI> pois = db.getPOIs();
-
+            MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(params[0].getActivity());
+            pois = db.getPOIs();
             for(int i=0;i<pois.size();i++) {
                 MarkerOptions options = new MarkerOptions();
                 options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
                 options.title(pois.get(i).getNombre());
-                //options.snippet(elements[1]);
-                publishProgress(options);
+                addWaypointMarker(options, pois.get(i));
             }
             return null;
         }
-
-        @Override
-        protected void onProgressUpdate(MarkerOptions... values) {
-            super.onProgressUpdate(values);
-            addWaypointMarker(values[0]);
-        }
     }
 
-    private void addWaypointMarker(MarkerOptions options) {
+    private void addWaypointMarker(MarkerOptions options, POI poi) {
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        map.addMarker(options);
+        Marker marker = map.addMarker(options);
+        hash.put(marker, poi);
     }
 
-    private void addOriginMarker(MarkerOptions options) {
+    private void addOriginMarker(MarkerOptions options, POI poi) {
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        map.addMarker(options);
+        Marker marker = map.addMarker(options);
+        hash.put(marker, poi);
     }
 
-    private void addDestinationMarker(MarkerOptions options) {
+    private void addDestinationMarker(MarkerOptions options, POI poi) {
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        map.addMarker(options);
+        Marker marker = map.addMarker(options);
+        hash.put(marker, poi);
     }
 }
