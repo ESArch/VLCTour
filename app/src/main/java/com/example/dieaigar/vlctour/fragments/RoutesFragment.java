@@ -102,7 +102,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             public void onInfoWindowClick(Marker marker) {
                 POI punto = hash.get(marker);
                 ruta.add(punto);
-                System.out.println("("+punto.getId()+") "+marker.getTitle()+": "+marker.getPosition().latitude+", "+marker.getPosition().longitude);
+                System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);
             }
         });
 
@@ -191,18 +191,38 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private class MarkerAsyncTask extends AsyncTask<RoutesFragment, Void, Void> {
+    private class MarkerAsyncTask extends AsyncTask<RoutesFragment, MarkerOptions, Void> {
+
+        int index;
+
         @Override
         protected Void doInBackground(RoutesFragment... params) {
             MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(params[0].getActivity());
             pois = db.getPOIs();
             for(int i=0;i<pois.size();i++) {
+                setIndex(i);
+                Log.d("Routes debug", pois.get(i).toString());
                 MarkerOptions options = new MarkerOptions();
                 options.position(new LatLng(pois.get(i).getLatitud(), pois.get(i).getLongitud()));
                 options.title(pois.get(i).getNombre());
-                addWaypointMarker(options, pois.get(i));
+                publishProgress(options);
+//                addWaypointMarker(options, pois.get(i));
             }
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(MarkerOptions... values) {
+            super.onProgressUpdate(values);
+            addWaypointMarker(values[0], pois.get(getIndex()));
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
         }
     }
 

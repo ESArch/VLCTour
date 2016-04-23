@@ -115,7 +115,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
 
-            POI p = new POI(0,cursor.getString(0),cursor.getString(1),cursor.getDouble(2), cursor.getDouble(3));
+            POI p = new POI(0,cursor.getInt(0),cursor.getString(1),cursor.getString(2), cursor.getDouble(3), cursor.getDouble(4));
             result.add(p);
         }
 

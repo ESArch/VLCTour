@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
 import com.example.dieaigar.vlctour.fragments.NearMeFragment;
 import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
@@ -63,6 +64,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MySqliteOpenHelper sqliteOpenHelper = MySqliteOpenHelper.getInstance(this);
 
     /* Assinging the toolbar object ot the view
     and setting the the Action bar to our toolbar

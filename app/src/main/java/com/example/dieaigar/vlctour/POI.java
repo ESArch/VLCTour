@@ -24,8 +24,9 @@ public class POI {
         this.id = id;
     }
 
-    public POI(int imagen, String nombre, String tipo, Double longitud, Double latitud) {
+    public POI(int imagen, int id, String nombre, String tipo, Double longitud, Double latitud) {
         this.imagen = imagen;
+        this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
         this.latitud = latitud;
@@ -47,4 +48,8 @@ public class POI {
     public Double getLongitud() {return  longitud;}
 
     public int getId() {return id;}
+
+    public String toString(){
+        return "POI: " + nombre + " latitud: " + latitud + " longitud: " + longitud;
+    }
 }

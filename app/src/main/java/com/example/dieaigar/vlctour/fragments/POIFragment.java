@@ -54,8 +54,9 @@ Declarar instancias globales
 
         for(int i=0;i<pois.size();i++){
             int poiimageid = getPOIImage(i);
-            items.add(new POI(poiimageid, WordUtils.capitalizeFully(pois.get(i).getNombre(), '\'', ' '), WordUtils.capitalizeFully(pois.get(i).getTipo()), pois.get(i).getLongitud(), pois.get(i).getLatitud()));
+            items.add(new POI(poiimageid,pois.get(i).getId(), WordUtils.capitalizeFully(pois.get(i).getNombre(), '\'', ' '), WordUtils.capitalizeFully(pois.get(i).getTipo()), pois.get(i).getLongitud(), pois.get(i).getLatitud()));
         }
+
         /*
         items.add(new POI(R.drawable.poi_000, "Antiguo Hospital General", "Monument"));
         items.add(new POI(R.drawable.poi_001, "L'Almoina. Centro Arqueológico", "Monument"));
