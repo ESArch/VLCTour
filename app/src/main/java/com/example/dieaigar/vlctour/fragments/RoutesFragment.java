@@ -3,6 +3,7 @@ package com.example.dieaigar.vlctour.fragments;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.net.Uri;
@@ -65,21 +66,36 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<POI> ruta = new ArrayList<>();
     HashMap<Marker, POI> hash = new HashMap<>();
     ArrayList<POI> pois;
+    Fragment fragment = null;
+
 
     public RoutesFragment() {
 
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
         getActivity().setTitle("Route Map");
-
+        final LayoutInflater i = inflater;
 
         mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.map_container, mMapFragment);
         fragmentTransaction.commit();
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.save_route);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                fragment = new SaveRouteFragment();
+                if(fragment != null) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            .commit();
+                }
+            }
+        });
+
 
         //mMapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
 
@@ -94,12 +110,15 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(39.463824, -0.358462)).zoom(13).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
-        map.setBuildingsEnabled(true);
+        map.getUiSettings().setMapToolbarEnabled(false);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 POI punto = hash.get(marker);
                 ruta.add(punto);
+                marker.hideInfoWindow();
+                Toast.makeText(getActivity(), "Marker added to route", Toast.LENGTH_SHORT).show();
                 System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);
             }
         });
