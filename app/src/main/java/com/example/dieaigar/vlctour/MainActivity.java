@@ -202,7 +202,7 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    /**
     public void filterChange(View view) {
         //TODO mostrar u ocultar en el mapa el marker.
         NearMeFragment nearMeFragment = (NearMeFragment) fragment;
@@ -225,7 +225,7 @@ public class MainActivity extends ActionBarActivity {
         Log.d("filterChange1After",nearMeFragment.getFilters().get(1).toString());
         Log.d("filterChange0After",nearMeFragment.getFilters().get(0).toString());
     }
-
+    */
     public void login(String username, String email){
         NAME = username;
         mAdapter.notifyDataSetChanged();

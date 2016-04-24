@@ -88,6 +88,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private GoogleApiClient googleApiClient;
     private MySqliteOpenHelper db;
     private List<Marker> markers = new ArrayList<>(0);
+    private Map<String,List<Marker>> mapMarkers = new HashMap<String, List<Marker>>(0);
 
     List<String> googleAPIFilters;
 
@@ -114,6 +115,12 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 addConnectionCallbacks(this).
                 addApi(LocationServices.API).
                 build();
+
+        //Markers
+        mapMarkers.put("park", new ArrayList<Marker>(0));
+        mapMarkers.put("museum", new ArrayList<Marker>(0));
+        mapMarkers.put("monument", new ArrayList<Marker>(0));
+        mapMarkers.put("beach", new ArrayList<Marker>(0));
 
         //Location
         userLocation = new Location("");
@@ -207,6 +214,31 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         parkButton = (ImageButton) view.findViewById(R.id.park);
         museumButton = (ImageButton) view.findViewById(R.id.museum);
         monumentButton = (ImageButton) view.findViewById(R.id.monument);
+        monumentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("monument")) {
+                    filters.get(1).add("monument");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("monument");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("monument",1);
+                    changeColor("monument",1);
+                }
+                else if(filters.get(1).contains("monument")) {
+                    filters.get(0).add("monument");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("monument");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("monument",0);
+                    changeColor("monument",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         beachButton = (ImageButton) view.findViewById(R.id.beach);
         shoppingButton = (ImageButton) view.findViewById(R.id.shopping);
         pubButton = (ImageButton) view.findViewById(R.id.pub);
@@ -261,18 +293,27 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     public void checkRadius() {
-        for(Marker marker : markers) {
-            Location markerLocation = new Location("");
-            markerLocation.setLatitude(marker.getPosition().latitude);
-            markerLocation.setLongitude(marker.getPosition().longitude);
-            Log.d("radiusChangeCond",""+(userLocation.distanceTo(markerLocation)));
-            Log.d("radiusCondition",(userLocation.distanceTo(markerLocation)+">"+radius+"Condition: "+(userLocation.distanceTo(markerLocation) > radius)));
-            if(userLocation.distanceTo(markerLocation) > radius) {
-                marker.setVisible(false);
+        for(Map.Entry<String, List<Marker>> entry : mapMarkers.entrySet()) {
+            for(Marker marker : entry.getValue()) {
+                Location markerLocation = new Location("");
+                markerLocation.setLatitude(marker.getPosition().latitude);
+                markerLocation.setLongitude(marker.getPosition().longitude);
+                if(userLocation.distanceTo(markerLocation) > radius) {
+                    marker.setVisible(false);
+                }
+                else {
+                    marker.setVisible(true);
+                }
             }
-            else {
+        }
+    }
+
+    public void changeMarkers(String name, int number) {
+        for(Marker marker : mapMarkers.get(name)) {
+            if(number == 1) {
                 marker.setVisible(true);
             }
+            else { marker.setVisible(false); }
         }
     }
 
@@ -485,8 +526,10 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         @Override
         protected void onPreExecute() {
-            markers.clear();
-            Log.d("dbAsyncLocationPre", userLocation.toString());
+            mapMarkers.get("museum").clear();
+            mapMarkers.get("park").clear();
+            mapMarkers.get("monument").clear();
+            mapMarkers.get("beach").clear();
             super.onPreExecute();
         }
 
@@ -497,12 +540,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 Location poiLocation = new Location("");
                 poiLocation.setLatitude(poi.getLatitud());
                 poiLocation.setLongitude(poi.getLongitud());
-                if(
-                        filters.get(1).contains(poi.getTipo())
-                  )
-                {
-                    publishProgress(poi);
-                }
+                publishProgress(poi);
             }
             return null;
         }
@@ -520,18 +558,21 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             switch (poi.getTipo()) {
                 case "museum" :
                     options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_museum));
+                    mapMarkers.get("museum").add(map.addMarker(options));
                     break;
                 case "park" :
                     options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_park));
+                    mapMarkers.get("park").add(map.addMarker(options));
                     break;
                 case "monument" :
                     options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_monument));
+                    mapMarkers.get("monument").add(map.addMarker(options));
                     break;
                 case "beach" :
                     options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_beach));
+                    mapMarkers.get("beach").add(map.addMarker(options));
                     break;
             }
-            markers.add(map.addMarker(options));
         }
     }
 }
