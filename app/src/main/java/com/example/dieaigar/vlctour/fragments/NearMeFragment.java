@@ -53,6 +53,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
@@ -75,7 +76,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
-    ImageButton enternainmentButton, hotelButton, restaurantButton, parkButton, museumButton, monumentButton, beachButton, shoppingButton, pubButton;
+    private ImageButton enternainmentButton, hotelButton, restaurantButton, parkButton, museumButton, monumentButton, beachButton, shoppingButton, pubButton;
     private SeekBar seekBar;
     private GoogleMap map;
     private double radius;
@@ -85,7 +86,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private LocationRequest locationRequest;
     private View view;
     private GoogleApiClient googleApiClient;
-    MySqliteOpenHelper db;
+    private MySqliteOpenHelper db;
+    private List<Marker> markers = new ArrayList<>(0);
 
     List<String> googleAPIFilters;
 
@@ -112,6 +114,11 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 addConnectionCallbacks(this).
                 addApi(LocationServices.API).
                 build();
+
+        //Location
+        userLocation = new Location("");
+        userLocation.setLatitude(39.463824);
+        userLocation.setLongitude(-0.358462);
 
         //Creating googleAPI filters
         googleAPIFilters = new ArrayList<String>(0);
@@ -159,10 +166,10 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("NewLocation", location.toString());
         userLocation = location;
         updateUI();
-        new databaseAsyncTask().execute();
-        new googleAPIAsyncTask().execute();
+        checkRadius();
     }
 
     @Override
@@ -231,6 +238,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 radius = (progress / 2.0) * 1000;
+                Log.d("radius change",""+radius);
+                checkRadius();
             }
 
             @Override
@@ -249,6 +258,22 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         });
 
         return view;
+    }
+
+    public void checkRadius() {
+        for(Marker marker : markers) {
+            Location markerLocation = new Location("");
+            markerLocation.setLatitude(marker.getPosition().latitude);
+            markerLocation.setLongitude(marker.getPosition().longitude);
+            Log.d("radiusChangeCond",""+(userLocation.distanceTo(markerLocation)));
+            Log.d("radiusCondition",(userLocation.distanceTo(markerLocation)+">"+radius+"Condition: "+(userLocation.distanceTo(markerLocation) > radius)));
+            if(userLocation.distanceTo(markerLocation) > radius) {
+                marker.setVisible(false);
+            }
+            else {
+                marker.setVisible(true);
+            }
+        }
     }
 
     public void changeColor(String name, int number) {
@@ -321,9 +346,6 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        userLocation = new Location("");
-        userLocation.setLatitude(39.463824);
-        userLocation.setLongitude(-0.358462);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude())).zoom(13).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.setBuildingsEnabled(true);
@@ -382,7 +404,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
         @Override
         protected Void doInBackground(List<String>... params) {
-
+            Log.d("googleAsyncLocationNull", ""+(userLocation == null));
+            Log.d("googleAsyncLocationPre", userLocation.toString());
             String uri = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                     "location="+userLocation.getLatitude()+","+userLocation.getLongitude()+
                     "&radius="+radius+"&types=" +  types +
@@ -461,6 +484,13 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private class databaseAsyncTask extends AsyncTask<List<String> ,POI, Void> {
 
         @Override
+        protected void onPreExecute() {
+            markers.clear();
+            Log.d("dbAsyncLocationPre", userLocation.toString());
+            super.onPreExecute();
+        }
+
+        @Override
         protected Void doInBackground(List<String>... params) {
             ArrayList<POI> pois = db.getPOIs();
             for(POI poi : pois) {
@@ -468,8 +498,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 poiLocation.setLatitude(poi.getLatitud());
                 poiLocation.setLongitude(poi.getLongitud());
                 if(
-                        filters.get(1).contains(poi.getTipo()) &&
-                        userLocation.distanceTo(poiLocation) <= (radius)
+                        filters.get(1).contains(poi.getTipo())
                   )
                 {
                     publishProgress(poi);
@@ -502,7 +531,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                     options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_beach));
                     break;
             }
-            map.addMarker(options);
+            markers.add(map.addMarker(options));
         }
     }
 }
