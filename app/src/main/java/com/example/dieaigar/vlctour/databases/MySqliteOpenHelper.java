@@ -51,7 +51,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, longitud DOUBLE NOT NULL, latitud DOUBLE NOT NULL);");
-            db.execSQL("CREATE TABLE routes (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, distancia DOUBLE NOT NULL;");
+            db.execSQL("CREATE TABLE routes (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, distancia DOUBLE NOT NULL);");
             parsecsv(db);
         }catch(SQLException e){e.printStackTrace();}
     }
