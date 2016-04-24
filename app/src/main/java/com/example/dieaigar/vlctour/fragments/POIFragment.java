@@ -110,6 +110,14 @@ Declarar instancias globales
                 break;
             case 4: poiimageid = R.drawable.poi_004;
                 break;
+            case 5: poiimageid = R.drawable.poi_005;
+                break;
+            case 6: poiimageid = R.drawable.poi_006;
+                break;
+            case 7: poiimageid = R.drawable.poi_007;
+                break;
+            case 8: poiimageid = R.drawable.poi_008;
+                break;
             default: poiimageid = R.drawable.poi_000;
         }
         return poiimageid;
