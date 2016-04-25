@@ -212,7 +212,57 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         enternainmentButton = (ImageButton) view.findViewById(R.id.entertainment);
         restaurantButton = (ImageButton) view.findViewById(R.id.restaurant);
         parkButton = (ImageButton) view.findViewById(R.id.park);
+        parkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("park")) {
+                    filters.get(1).add("park");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("park");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("park",1);
+                    changeColor("park",1);
+                }
+                else if(filters.get(1).contains("park")) {
+                    filters.get(0).add("park");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("park");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("park",0);
+                    changeColor("park",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         museumButton = (ImageButton) view.findViewById(R.id.museum);
+        museumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("museum")) {
+                    filters.get(1).add("museum");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("museum");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("museum",1);
+                    changeColor("museum",1);
+                }
+                else if(filters.get(1).contains("museum")) {
+                    filters.get(0).add("museum");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("museum");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("museum",0);
+                    changeColor("museum",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         monumentButton = (ImageButton) view.findViewById(R.id.monument);
         monumentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +290,31 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             }
         });
         beachButton = (ImageButton) view.findViewById(R.id.beach);
+        beachButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("beach")) {
+                    filters.get(1).add("beach");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("beach");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("beach",1);
+                    changeColor("beach",1);
+                }
+                else if(filters.get(1).contains("beach")) {
+                    filters.get(0).add("beach");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("beach");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("beach",0);
+                    changeColor("beach",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         shoppingButton = (ImageButton) view.findViewById(R.id.shopping);
         pubButton = (ImageButton) view.findViewById(R.id.pub);
 
@@ -450,7 +525,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             String uri = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                     "location="+userLocation.getLatitude()+","+userLocation.getLongitude()+
                     "&radius="+radius+"&types=" +  types +
-                    "&key=AIzaSyBxixEz7l6vZA8Pj4dWqHxN1Y7OVBLdBiE");
+                    "&key=AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0");
 
             try {
                 URL url = new URL(uri);
