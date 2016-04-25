@@ -63,7 +63,8 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap map;
     Polyline route = null;
     final String directions_API_KEY = "AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0";
-    ArrayList<POI> ruta = new ArrayList<>();
+    ArrayList<POI> poisRuta = new ArrayList<>();
+    ArrayList<Integer> ruta = new ArrayList<>();
     HashMap<Marker, POI> hash = new HashMap<>();
     ArrayList<POI> pois;
     Fragment fragment = null;
@@ -116,7 +117,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 POI punto = hash.get(marker);
-                ruta.add(punto);
+                pois.add(punto);
                 marker.hideInfoWindow();
                 Toast.makeText(getActivity(), "Marker added to route", Toast.LENGTH_SHORT).show();
                 System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);
@@ -141,13 +142,13 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             uriBuilder.appendPath("api");
             uriBuilder.appendPath("directions");
             uriBuilder.appendPath("json");
-            uriBuilder.appendQueryParameter("origin", ruta.get(0).getLatitud() + "," + ruta.get(0).getLongitud());
-            uriBuilder.appendQueryParameter("destination", ruta.get(ruta.size()-1).getLatitud()+","+ruta.get(ruta.size()-1).getLongitud());
+            uriBuilder.appendQueryParameter("origin", poisRuta.get(0).getLatitud() + "," + poisRuta.get(0).getLongitud());
+            uriBuilder.appendQueryParameter("destination", poisRuta.get(poisRuta.size()-1).getLatitud()+","+poisRuta.get(poisRuta.size()-1).getLongitud());
             uriBuilder.appendQueryParameter("waypoints", "");
             String uri = uriBuilder.build().toString();
-            for(int i=1; i<ruta.size()-1; i++) {
-                uri += ruta.get(i).getLatitud() + "," + ruta.get(i).getLongitud();
-                if(i != ruta.size()-2) uri += "|";
+            for(int i=1; i<poisRuta.size()-1; i++) {
+                uri += poisRuta.get(i).getLatitud() + "," + poisRuta.get(i).getLongitud();
+                if(i != poisRuta.size()-2) uri += "|";
             }
 
             uri += "&key="+directions_API_KEY;
@@ -225,7 +226,6 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                 options.title(poi.getNombre());
                 hashMap.put(options, poi);
                 publishProgress(options);
-//                addWaypointMarker(options, pois.get(i));
             }
             return null;
         }

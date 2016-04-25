@@ -1,5 +1,9 @@
 package com.example.dieaigar.vlctour.pojos;
 
+import com.example.dieaigar.vlctour.POI;
+
+import java.util.ArrayList;
+
 /**
  * Created by Pablo on 23/04/2016.
  */
@@ -7,13 +11,13 @@ public class Route {
     private int id;
     private String nombre;
     private String tipo;
-    private double distancia;
+    private String ruta;
 
-    public Route(int id, String nombre, String tipo, double distancia) {
+    public Route(int id, String nombre, String tipo,  String ruta) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
-        this.distancia = distancia;
+        this.ruta = ruta;
     }
 
     public int getId() {
@@ -28,7 +32,9 @@ public class Route {
         return tipo;
     }
 
-    public double getDistancia() {
-        return distancia;
+    public String getRuta() { return ruta; }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
 }

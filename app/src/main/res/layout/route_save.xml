@@ -68,10 +68,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_save"
-        android:layout_marginBottom="24dp"
+        android:text="Save Route"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Save Route" />
+        android:layout_marginBottom="38dp" />
 
 
 </RelativeLayout>

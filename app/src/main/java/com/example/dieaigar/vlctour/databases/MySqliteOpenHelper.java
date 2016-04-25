@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
+import com.example.dieaigar.vlctour.pojos.Route;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -51,7 +52,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, longitud DOUBLE NOT NULL, latitud DOUBLE NOT NULL);");
-            db.execSQL("CREATE TABLE routes (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, distancia DOUBLE NOT NULL);");
+            db.execSQL("CREATE TABLE routes (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, tipo TEXT NOT NULL, ruta TEXT NOT NULL);");
             parsecsv(db);
         }catch(SQLException e){e.printStackTrace();}
     }
@@ -124,16 +125,15 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public ArrayList<POI> getRoutes() {
+    public ArrayList<Route> getRoutes() {
 
-        ArrayList<POI> result = new ArrayList<>();
+        ArrayList<Route> result = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query("routes", new String[]{"id", "nombre", "tipo", "distancia"}, null, null, null, null, null);
+        Cursor cursor = database.query("routes", new String[]{"id", "nombre", "tipo", "ruta"}, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
-
-            POI p = new POI(0,cursor.getInt(0),cursor.getString(1),cursor.getString(2), cursor.getDouble(3), cursor.getDouble(4));
-            result.add(p);
+            Route r = new Route(cursor.getInt(0),cursor.getString(1),cursor.getString(2), cursor.getString(3));
+            result.add(r);
         }
 
         cursor.close();
@@ -159,5 +159,13 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
         values.put("longitud", longitud);
         values.put("latitud", latitud);
         db.insert("pois", null, values);
+    }
+
+    public void addRoute(String nombre, String tipo, String ruta, SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        values.put("nombre", nombre);
+        values.put("tipo", tipo);
+        values.put("ruta", ruta);
+        db.insert("routes", null, values);
     }
 }

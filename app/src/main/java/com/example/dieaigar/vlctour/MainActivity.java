@@ -33,6 +33,8 @@ import com.example.dieaigar.vlctour.fragments.SaveRouteFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -43,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
     int ICONS[] = {R.drawable.ic_home,R.drawable.ic_near,R.drawable.ic_pois,R.drawable.ic_routes, R.drawable.ic_login};
 
     Fragment fragment = null;
+    ArrayList<Integer> ruta = new ArrayList<>();
 
     //Similarly we Create a String Resource for the name and email in the header view
     //And we also create a int resource for profile picture in the header view
