@@ -27,6 +27,7 @@ import com.example.dieaigar.vlctour.MainActivity;
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.example.dieaigar.vlctour.pojos.OptionsIndex;
 import com.example.dieaigar.vlctour.pojos.Route;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -145,9 +146,9 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         else new RouteAsyncTask().execute();
     }
 
-    private class RouteAsyncTask extends AsyncTask<Double, MarkerOptions, List<LatLng>> {
+    private class RouteAsyncTask extends AsyncTask<Double, OptionsIndex, List<LatLng>> {
 
-        int index;
+        OptionsIndex oi;
 
         @Override
         protected List<LatLng> doInBackground(Double... params) {
@@ -157,14 +158,14 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
 
             for(int i=0; i<ruta.size(); i++) {
                 //// TODO: 25/04/2016 sincronizar variable index (race condition)
-                index = i;
                 pois = db.getPOIs();
                 POI poi = pois.get(ruta.get(i)-1);
                 poisRuta.add(poi);
                 MarkerOptions options = new MarkerOptions();
                 options.position(new LatLng(poi.getLatitud(), poi.getLongitud()));
                 options.title(poi.getNombre());
-                publishProgress(options);
+                oi = new OptionsIndex(options, i);
+                publishProgress(oi);
             }
 
             Uri.Builder uriBuilder = new Uri.Builder();
@@ -224,15 +225,15 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         }
 
         @Override
-        protected void onProgressUpdate(MarkerOptions... values) {
+        protected void onProgressUpdate(OptionsIndex... values) {
             super.onProgressUpdate(values);
-            System.out.println(index+" "+(ruta.size()-1));
-            if(index == 0) {
-                addOriginMarker(values[0], null);
-            } else if(index == ruta.size()-1) {
-                addDestinationMarker(values[0], null);
+            System.out.println();
+            if(values[0].getIndex() == 0) {
+                addOriginMarker(values[0].getOptions(), null);
+            } else if(values[0].getIndex() == ruta.size()-1) {
+                addDestinationMarker(values[0].getOptions(), null);
             } else {
-                addWaypointMarker(values[0], null);
+                addWaypointMarker(values[0].getOptions(), null);
             }
         }
 
