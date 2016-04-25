@@ -18,10 +18,9 @@ xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.
     <meta-data android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyBxixEz7l6vZA8Pj4dWqHxN1Y7OVBLdBiE" />
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyCUmKwe-WbUu4MupP04IWU4ulblZK6JoYY"/>
 
 </application>
 

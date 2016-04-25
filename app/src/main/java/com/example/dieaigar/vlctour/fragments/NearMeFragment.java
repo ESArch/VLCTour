@@ -114,6 +114,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 addOnConnectionFailedListener(this).
                 addConnectionCallbacks(this).
                 addApi(LocationServices.API).
+                addApi(Places.GEO_DATA_API).
+                addApi(Places.PLACE_DETECTION_API).
                 build();
 
         //Markers
@@ -525,7 +527,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             String uri = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                     "location="+userLocation.getLatitude()+","+userLocation.getLongitude()+
                     "&radius="+radius+"&types=" +  types +
-                    "&key=AIzaSyCqfQOGG0ToG3EYKnsrmtUKj8OsUjeqzW0");
+                    "&key=AIzaSyB22Jq8Betpdl92CmKV5OqahRgsI7EnCvI");
 
             try {
                 URL url = new URL(uri);
