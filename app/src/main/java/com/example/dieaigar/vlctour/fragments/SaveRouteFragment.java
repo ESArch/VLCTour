@@ -23,12 +23,34 @@ import java.util.ArrayList;
  */
 public class SaveRouteFragment extends Fragment {
 
-    ArrayList<Integer> ruta = new ArrayList<>();
+    private String pois;
+
+
     MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(this.getActivity());
-    View ref;
+    EditText name;
+    CheckBox monument;
+    CheckBox museum;
+    CheckBox parks;
+    CheckBox beaches;
 
     public SaveRouteFragment() {
 
+    }
+
+    public static SaveRouteFragment newInstance(String pois){
+        SaveRouteFragment fragment = new SaveRouteFragment();
+        Bundle args = new Bundle();
+        args.putString("pois", pois);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            pois = getArguments().getString("pois");
+        }
     }
 
     @Nullable
@@ -46,30 +68,38 @@ public class SaveRouteFragment extends Fragment {
             }
         };
         button.setOnClickListener(buttonListener);
-        ref = rootView;
+
+        name = (EditText) rootView.findViewById(R.id.editText);
+        monument = (CheckBox) rootView.findViewById(R.id.checkBox);
+        museum = (CheckBox) rootView.findViewById(R.id.checkBox2);
+        parks = (CheckBox) rootView.findViewById(R.id.checkBox3);
+        beaches = (CheckBox) rootView.findViewById(R.id.checkBox4);
 
         return rootView;
     }
 
     public void save() {
         String path = "";
-        EditText name = (EditText) ref.findViewById(R.id.editText);
-
-        CheckBox monument = (CheckBox) ref.findViewById(R.id.checkBox);
-        CheckBox museum = (CheckBox) ref.findViewById(R.id.checkBox2);
-        CheckBox parks = (CheckBox) ref.findViewById(R.id.checkBox3);
-        CheckBox beaches = (CheckBox) ref.findViewById(R.id.checkBox4);
-
         String tipo = "";
+
         if(monument.isChecked()) tipo += "monument,";
         if(museum.isChecked()) tipo += "museum,";
         if(parks.isChecked()) tipo += "parks,";
         if(beaches.isChecked()) tipo += "beaches,";
 
-        for(int i=0; i<ruta.size(); i++) {
+        /*for(int i=0; i<ruta.size(); i++) {
             path += ruta.get(i)+",";
             if(i == ruta.size()-1) path += ruta.get(i);
-        }
-        db.addRoute(name.getText().toString(), tipo.substring(0, tipo.length()-1), path, db.getWritableDatabase());
+        }*/
+
+        db.addRoute(name.getText().toString(), tipo.substring(0, tipo.length()-1), pois, db.getWritableDatabase());
+    }
+
+    public String getPois() {
+        return pois;
+    }
+
+    public void setPois(String pois) {
+        this.pois = pois;
     }
 }

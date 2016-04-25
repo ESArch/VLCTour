@@ -27,6 +27,7 @@ import com.example.dieaigar.vlctour.MainActivity;
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -80,6 +81,8 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         getActivity().setTitle("Route Map");
         final LayoutInflater i = inflater;
 
+        loadRuta();
+
         mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.map_container, mMapFragment);
@@ -87,13 +90,16 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.save_route);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                fragment = new SaveRouteFragment();
+
                 if(fragment != null) {
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame, fragment)
+                            .replace(R.id.content_frame, SaveRouteFragment.newInstance(ruta.toString()))
                             .commit();
                 }
+
+
+                //aqui guardar
             }
         });
 
@@ -103,6 +109,9 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         mMapFragment.getMapAsync(this);
 
         return rootView;
+    }
+
+    private void loadRuta() {
     }
 
     @Override
@@ -117,7 +126,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 POI punto = hash.get(marker);
-                pois.add(punto);
+                ruta.add(punto.getId());
                 marker.hideInfoWindow();
                 Toast.makeText(getActivity(), "Marker added to route", Toast.LENGTH_SHORT).show();
                 System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);

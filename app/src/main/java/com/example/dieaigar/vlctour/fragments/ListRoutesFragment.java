@@ -16,6 +16,7 @@ import com.example.dieaigar.vlctour.MainActivity;
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.example.dieaigar.vlctour.pojos.Route;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,7 +50,12 @@ public class ListRoutesFragment extends Fragment {
             }
         });
 
-        ArrayList<String> list = new ArrayList<String>();
+
+
+        ArrayList<Route> list = new ArrayList<>();
+        MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(this.getActivity());
+
+
         list.add("Route 1");
         list.add("Route 2");
         list.add("Route 3");
