@@ -27,6 +27,8 @@ import java.util.List;
 public class ListRoutesFragment extends Fragment {
 
     Fragment fragment = null;
+    ArrayList<Route> list;
+    MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(this.getActivity());
 
     public ListRoutesFragment() {
 
@@ -50,19 +52,25 @@ public class ListRoutesFragment extends Fragment {
             }
         });
 
-
-
-        ArrayList<Route> list = new ArrayList<>();
-        MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(this.getActivity());
-
-
-        list.add("Route 1");
-        list.add("Route 2");
-        list.add("Route 3");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_list_item_1, list);
-        ListView lv = (ListView)  rootView.findViewById(R.id.list);
+        list = db.getRoutes();
+        ArrayList<String> titles = new ArrayList<>();
+        for(int i=0; i<list.size(); i++) {
+            titles.add(list.get(i).getNombre());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_list_item_1, titles);
+        ListView lv = (ListView) rootView.findViewById(R.id.list);
         lv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String path = list.get(position).getRuta();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, RoutesFragment.newInstance(path))
+                        .commit();
+            }
+        });
 
         return rootView;
     }

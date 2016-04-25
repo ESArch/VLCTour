@@ -59,8 +59,9 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
     public POI getById(int id) {
         SQLiteDatabase database = getReadableDatabase();
+        //Cursor cursor = database.rawQuery("select * from pois where id='"+id+"'", null);
         Cursor cursor = database.query("pois", new String[]{"id", "nombre", "tipo", "longitud", "latitud"}, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
-        POI p = new POI(cursor.getString(0), cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4));
+        POI p = new POI(cursor.getString(4), cursor.getString(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(0));
         cursor.close();
         database.close();
         System.out.println(p.getNombre());
@@ -126,7 +127,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Route> getRoutes() {
-
         ArrayList<Route> result = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query("routes", new String[]{"id", "nombre", "tipo", "ruta"}, null, null, null, null, null);

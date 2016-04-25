@@ -24,8 +24,6 @@ import java.util.ArrayList;
 public class SaveRouteFragment extends Fragment {
 
     private String pois;
-
-
     MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(this.getActivity());
     EditText name;
     CheckBox monument;
@@ -79,7 +77,6 @@ public class SaveRouteFragment extends Fragment {
     }
 
     public void save() {
-        String path = "";
         String tipo = "";
 
         if(monument.isChecked()) tipo += "monument,";

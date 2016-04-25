@@ -27,6 +27,7 @@ import com.example.dieaigar.vlctour.MainActivity;
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.example.dieaigar.vlctour.pojos.Route;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -68,20 +69,39 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<Integer> ruta = new ArrayList<>();
     HashMap<Marker, POI> hash = new HashMap<>();
     ArrayList<POI> pois;
-    Fragment fragment = null;
-
+    String path = "";
 
     public RoutesFragment() {
 
+    }
+
+    public static RoutesFragment newInstance(String path){
+        RoutesFragment fragment = new RoutesFragment();
+        Bundle args = new Bundle();
+        args.putString("path", path);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if (getArguments() != null){
+            path = getArguments().getString("path");
+            path = path.substring(1, path.length()-1);
+            String[] id_string = path.split(", ");
+            int[] id_int = new int[id_string.length];
+            for(int i=0; i<id_string.length; i++) {
+                id_int[i] = Integer.parseInt(id_string[i]);
+                ruta.add(id_int[i]);
+            }
+        }
+        super.onCreate(savedInstanceState);
     }
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
         getActivity().setTitle("Route Map");
-        final LayoutInflater i = inflater;
-
-        loadRuta();
 
         mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -90,28 +110,16 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.save_route);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                if(fragment != null) {
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame, SaveRouteFragment.newInstance(ruta.toString()))
                             .commit();
-                }
-
-
-                //aqui guardar
             }
         });
-
-
-        //mMapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
 
         mMapFragment.getMapAsync(this);
 
         return rootView;
-    }
-
-    private void loadRuta() {
     }
 
     @Override
@@ -133,11 +141,13 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        if(ruta.size() == 0) new MarkerAsyncTask().execute(this);
+        if(path.equals("")) new MarkerAsyncTask().execute(this);
         else new RouteAsyncTask().execute();
     }
 
-    private class RouteAsyncTask extends AsyncTask<Double, Void, List<LatLng>> {
+    private class RouteAsyncTask extends AsyncTask<Double, MarkerOptions, List<LatLng>> {
+
+        int index;
 
         @Override
         protected List<LatLng> doInBackground(Double... params) {
@@ -146,7 +156,15 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
             MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(getActivity());
 
             for(int i=0; i<ruta.size(); i++) {
-                poisRuta.add(db.getById(ruta.get(i)));
+                //// TODO: 25/04/2016 sincronizar variable index (race condition)
+                index = i;
+                pois = db.getPOIs();
+                POI poi = pois.get(ruta.get(i)-1);
+                poisRuta.add(poi);
+                MarkerOptions options = new MarkerOptions();
+                options.position(new LatLng(poi.getLatitud(), poi.getLongitud()));
+                options.title(poi.getNombre());
+                publishProgress(options);
             }
 
             Uri.Builder uriBuilder = new Uri.Builder();
@@ -165,7 +183,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                 if(i != poisRuta.size()-2) uri += "|";
             }
 
-            uri += "&key="+directions_API_KEY;
+            uri += "&mode=walking&key="+directions_API_KEY;
 
             System.out.println(uri);
 
@@ -203,6 +221,19 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                 e.printStackTrace();
             }
             return pointsList;
+        }
+
+        @Override
+        protected void onProgressUpdate(MarkerOptions... values) {
+            super.onProgressUpdate(values);
+            System.out.println(index+" "+(ruta.size()-1));
+            if(index == 0) {
+                addOriginMarker(values[0], null);
+            } else if(index == ruta.size()-1) {
+                addDestinationMarker(values[0], null);
+            } else {
+                addWaypointMarker(values[0], null);
+            }
         }
 
         @Override

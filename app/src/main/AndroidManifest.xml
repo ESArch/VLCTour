@@ -20,7 +20,7 @@ xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.
 
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCUmKwe-WbUu4MupP04IWU4ulblZK6JoYY"/>
+        android:value="AIzaSyBxixEz7l6vZA8Pj4dWqHxN1Y7OVBLdBiE"/>
 
 </application>
 
