@@ -134,6 +134,11 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         protected List<LatLng> doInBackground(Double... params) {
 
             List<LatLng> pointsList = null;
+            MySqliteOpenHelper db = MySqliteOpenHelper.getInstance(getActivity());
+
+            for(int i=0; i<ruta.size(); i++) {
+                poisRuta.add(db.getById(ruta.get(i)));
+            }
 
             Uri.Builder uriBuilder = new Uri.Builder();
             uriBuilder.scheme("https");
