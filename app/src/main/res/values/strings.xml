@@ -8,8 +8,8 @@
     <string name="option3_drawer">What to see</string>
     <string name="option4_drawer">Routes</string>
     <string name="option5_drawer">Sign in</string>
-    <string name="user_name_drawer">Akash Bangad</string>
-    <string name="user_email_drawer">akash.bangad@android4devs.com</string>
+    <string name="user_name_drawer" translatable="false">Akash Bangad</string>
+    <string name="user_email_drawer" translatable="false">akash.bangad@android4devs.com</string>
     <string name="poi_title">Points Of Interest</string>
     <string name="near_me_tilte">Near Me</string>
     <string name="routes_title">Route Map</string>
@@ -30,5 +30,12 @@
     <string name="location_access_denied">Location access denied</string>
     <string name="marker_added">Marker added to route</string>
     <string name="void_save">Nothing to save</string>
+    <string name="not_member">Not a member? Sign up now.</string>
+    <string name="login_button">LOGIN</string>
+    <string name="password">PASSWORD</string>
+    <string name="username">USERNAME</string>
+    <string name="email">EMAIL</string>
+    <string name="register">REGISTER</string>
+    <string name="registered_user">Already registered! Log me in.</string>
 
 </resources>

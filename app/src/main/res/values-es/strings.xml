@@ -29,4 +29,11 @@
     <string name="sign_in_title">Iniciar sesión</string>
     <string name="sign_up">Darse de alta</string>
     <string name="void_save">Nada que guardar</string>
+    <string name="not_member">¿Aún no eres miembro? Date de alta.</string>
+    <string name="login_button">Iniciar sesión</string>
+    <string name="password">CONTRASEÑA</string>
+    <string name="username">NOMBRE DE USUARIO</string>
+    <string name="email">CORREO ELECTRÓNICO</string>
+    <string name="register">Registrar</string>
+    <string name="registered_user">¡Ya estoy registrado! Iniciar sesión</string>
 </resources>
