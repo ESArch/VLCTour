@@ -37,7 +37,7 @@ public class ListRoutesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.route_list, container, false);
-        getActivity().setTitle("Route List");
+        getActivity().setTitle(getString(R.string.route_list));
 
         FloatingActionButton myFab = (FloatingActionButton)  rootView.findViewById(R.id.add_route);
         myFab.setOnClickListener(new View.OnClickListener() {

@@ -102,7 +102,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.routes_fragment, container, false);
-        getActivity().setTitle("Route Map");
+        getActivity().setTitle(getString(R.string.routes_title));
 
         mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -137,7 +137,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                 POI punto = hash.get(marker);
                 ruta.add(punto.getId());
                 marker.hideInfoWindow();
-                Toast.makeText(getActivity(), "Marker added to route", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.marker_added, Toast.LENGTH_SHORT).show();
                 System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);
             }
         });

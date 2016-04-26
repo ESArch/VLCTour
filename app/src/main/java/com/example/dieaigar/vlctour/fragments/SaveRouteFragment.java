@@ -55,14 +55,14 @@ public class SaveRouteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.route_save, container, false);
-        getActivity().setTitle("Save Route");
+        getActivity().setTitle(getString(R.string.save_route_title));
 
         Button button = (Button) rootView.findViewById(R.id.button_save);
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 save();
-                Toast.makeText(getActivity(), "Saved route", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.saved_route, Toast.LENGTH_SHORT).show();
             }
         };
         button.setOnClickListener(buttonListener);

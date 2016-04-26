@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class POIFragment extends Fragment {
-    public static final String ARG_PLANET_NUMBER = "planet_number";
 
     /*
 Declarar instancias globales
@@ -43,7 +42,7 @@ Declarar instancias globales
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_poi, container, false);
-        getActivity().setTitle("Points Of Interest");
+        getActivity().setTitle(getString(R.string.poi_title));
 
 
         // Inicializar POIs
@@ -57,13 +56,6 @@ Declarar instancias globales
             items.add(new POI(poiimageid,pois.get(i).getId(), WordUtils.capitalizeFully(pois.get(i).getNombre(), '\'', ' '), WordUtils.capitalizeFully(pois.get(i).getTipo()), pois.get(i).getLongitud(), pois.get(i).getLatitud()));
         }
 
-        /*
-        items.add(new POI(R.drawable.poi_000, "Antiguo Hospital General", "Monument"));
-        items.add(new POI(R.drawable.poi_001, "L'Almoina. Centro Arqueológico", "Monument"));
-        items.add(new POI(R.drawable.poi_002, "Atarazanas", "Monument"));
-        items.add(new POI(R.drawable.poi_003, "Museo Benlliure", "Museum"));
-        items.add(new POI(R.drawable.poi_004, "Ermita de Santa Lucía", "Monument"));
-        */
 
         // Obtener el Recycler
         recycler = (RecyclerView) rootView.findViewById(R.id.reciclador);
@@ -77,20 +69,6 @@ Declarar instancias globales
         adapter = new POIAdapter(getActivity(),items);
         recycler.setAdapter(adapter);
 
-
-        //Set click en la imagen
-        /*RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.individual_poi_layout);
-        rl.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                fragment = new POIDetailsFragment();
-                if(fragment != null) {
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame, fragment)
-                            .commit();
-                }
-            }
-        });*/
 
         return rootView;
     }

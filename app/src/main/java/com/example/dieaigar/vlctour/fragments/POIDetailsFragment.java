@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class POIDetailsFragment extends Fragment {
-    public static final String ARG_PLANET_NUMBER = "planet_number";
     private POI poi;
     /*
 Declarar instancias globales

@@ -53,7 +53,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_signup, container, false);
-        getActivity().setTitle("Sign up");
+        getActivity().setTitle(getString(R.string.sign_up));
 
         etUsername = (EditText) rootView.findViewById(R.id.etUsernameRegister);
         etEmail = (EditText) rootView.findViewById(R.id.etEmailRegister);
@@ -87,10 +87,10 @@ public class SignUpFragment extends Fragment {
         password = etPassword.getText().toString();
 
         if(username.equals("") || email.equals("") || password.equals(""))
-            Toast.makeText(getActivity(), "Missing fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.missing_fields), Toast.LENGTH_SHORT).show();
 
         else {
-            Toast.makeText(getActivity(), "Registering...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.registering, Toast.LENGTH_SHORT).show();
             User user = new User(username, email, password);
             new RegisterAsyncTask().execute(user);
         }
@@ -108,11 +108,11 @@ public class SignUpFragment extends Fragment {
 
     private void displayResult(boolean valid){
         if(valid){
-            Toast.makeText(getActivity(), "Registered", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.registered, Toast.LENGTH_SHORT).show();
             ((MainActivity)getActivity()).login(username, "");
         }
         else
-            Toast.makeText(getActivity(), "An error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
     }
 
     private class RegisterAsyncTask extends AsyncTask<User, Void, Boolean>{

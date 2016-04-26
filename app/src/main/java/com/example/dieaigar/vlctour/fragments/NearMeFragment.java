@@ -183,7 +183,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getActivity(), "Service unavaliable. Try later.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.service_unavailable, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -194,7 +194,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(getActivity(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.disconnected_reconnect, Toast.LENGTH_SHORT).show();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -203,7 +203,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_near_me, container, false);
-        getActivity().setTitle("Near Me");
+        getActivity().setTitle(getString(R.string.near_me_tilte));
 
         //Set variables
         seekBar = (SeekBar) view.findViewById(R.id.radius);
@@ -501,7 +501,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                     map.getUiSettings().setMyLocationButtonEnabled(true);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Location access denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.location_access_denied, Toast.LENGTH_SHORT).show();
                 }
                 break;
             default :

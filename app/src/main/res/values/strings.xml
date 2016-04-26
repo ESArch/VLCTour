@@ -1,5 +1,4 @@
 <resources>
-    <!-- Drawer -->
     <string name="app_name">VLCTour</string>
     <string name="menu_credits">Credits</string>
     <string name="openDrawer">Open drawer</string>
@@ -11,8 +10,24 @@
     <string name="option5_drawer">Sign in</string>
     <string name="user_name_drawer">Akash Bangad</string>
     <string name="user_email_drawer">akash.bangad@android4devs.com</string>
-
-
-    <!-- Drawer -->
+    <string name="poi_title">Points Of Interest</string>
+    <string name="near_me_tilte">Near Me</string>
+    <string name="routes_title">Route Map</string>
+    <string name="save_route_title">Save Route</string>
+    <string name="saved_route">Saved route</string>
+    <string name="sign_in_title">Sign in</string>
+    <string name="missing_fields">Missing fields</string>
+    <string name="login_in">Login in...</string>
+    <string name="logged_in">Logged in</string>
+    <string name="invalid_username_password">Invalid username or password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="registering">Registering...</string>
+    <string name="registered">Registered</string>
+    <string name="error">An error occurred</string>
+    <string name="route_list">Route List</string>
+    <string name="disconnected_reconnect">Disconnected. Please re-connect.</string>
+    <string name="service_unavailable">Service unavaliable. Try later.</string>
+    <string name="location_access_denied">Location access denied</string>
+    <string name="marker_added">Marker added to route</string>
 
 </resources>

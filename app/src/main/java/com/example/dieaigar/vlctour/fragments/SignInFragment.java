@@ -52,7 +52,7 @@ public class SignInFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_signin, container, false);
-        getActivity().setTitle("Sign in");
+        getActivity().setTitle(getString(R.string.sign_in_title));
 
         etUsername = (EditText) rootView.findViewById(R.id.etUsernameLogin);
         etPassword = (EditText) rootView.findViewById(R.id.etPasswordLogin);
@@ -85,10 +85,10 @@ public class SignInFragment extends Fragment{
         password = etPassword.getText().toString();
         
         if (username.equals("") || password.equals(""))
-            Toast.makeText(getActivity(), "Missing fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.missing_fields, Toast.LENGTH_SHORT).show();
         
         else{
-            Toast.makeText(getActivity(), "Login in...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.login_in, Toast.LENGTH_SHORT).show();
             User user = new User(username, "", password);
             new LoginAsyncTask().execute(user);
         }
@@ -98,12 +98,12 @@ public class SignInFragment extends Fragment{
 
     private void displayResult(boolean valid){
         if(valid){
-            Toast.makeText(getActivity(), "Loged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.logged_in, Toast.LENGTH_SHORT).show();
             ((MainActivity)getActivity()).login(username, "");
         }
 
         else
-            Toast.makeText(getActivity(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.invalid_username_password, Toast.LENGTH_SHORT).show();
     }
 
 
