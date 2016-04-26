@@ -96,7 +96,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     List<String> googleAPIFilters;
 
-    private static final String restaurant = "restaurant";
+    private static final List<String> restaurant = new ArrayList<String>(Arrays.asList("restaurant", "bar", "food"));
     private static final List<String> shopping = new ArrayList<String>(Arrays.asList("department_store", "shopping_mall", "clothing_store", "jewelry_store", "shoe_store"));
     private static final String hotel = "lodging";
     private static final String pub = "night_club";
@@ -688,11 +688,23 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                                 JSONresponseList.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")
                         );
                         JSONArray JSONresponseTypes = JSONresponseList.getJSONObject(i).getJSONArray("types");
-                        if(JSONresponseTypes.toString().contains("restaurant")) { place.setType("restaurant"); }
+                        if (
+                            JSONresponseTypes.toString().contains("restaurant") ||
+                            JSONresponseTypes.toString().contains("bar") ||
+                            JSONresponseTypes.toString().contains("food")
+                            )
+                        { place.setType("restaurant"); }
                         else if(JSONresponseTypes.toString().contains("lodging")) { place.setType("hotel"); }
                         else if(JSONresponseTypes.toString().contains("night_club")) { place.setType("pub"); }
                         else if(JSONresponseTypes.toString().contains("movie_theater")) { place.setType("entertainment"); }
-                        else { place.setType("shopping"); }
+                        else if (
+                                JSONresponseTypes.toString().contains("department_store") ||
+                                JSONresponseTypes.toString().contains("shopping_mall") ||
+                                JSONresponseTypes.toString().contains("clothing_store") ||
+                                JSONresponseTypes.toString().contains("jewelry_store") ||
+                                JSONresponseTypes.toString().contains("shoe_store")
+                                )
+                        { place.setType("shopping"); }
                         Log.d("response", place.toString());
 
                         publishProgress(place);
@@ -754,7 +766,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             for(String type : filters.get(1)) {
                 switch (type) {
                     case "restaurant" :
-                        googleAPIFilters.add(restaurant);
+                        googleAPIFilters.addAll(restaurant);
                         break;
                     case "shopping" :
                         googleAPIFilters.addAll(shopping);
