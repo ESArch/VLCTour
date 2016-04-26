@@ -17,7 +17,7 @@
     <string name="saved_route">Saved route</string>
     <string name="sign_in_title">Sign in</string>
     <string name="missing_fields">Missing fields</string>
-    <string name="login_in">Login in...</string>
+    <string name="login_in">Logging in...</string>
     <string name="logged_in">Logged in</string>
     <string name="invalid_username_password">Invalid username or password</string>
     <string name="sign_up">Sign up</string>
@@ -26,8 +26,9 @@
     <string name="error">An error occurred</string>
     <string name="route_list">Route List</string>
     <string name="disconnected_reconnect">Disconnected. Please re-connect.</string>
-    <string name="service_unavailable">Service unavaliable. Try later.</string>
+    <string name="service_unavailable">Service unavailable. Try later.</string>
     <string name="location_access_denied">Location access denied</string>
     <string name="marker_added">Marker added to route</string>
+    <string name="void_save">Nothing to save</string>
 
 </resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VLCTour</string>
+    <string name="closeDrawer">Cerrar cajón</string>
+    <string name="disconnected_reconnect">Desconectado. Por favor vuelve a conectar.</string>
+    <string name="error">Ocurrió un error</string>
+    <string name="invalid_username_password">Nombre de usuario o contraseña inválidos</string>
+    <string name="location_access_denied">Acceso a ubicación denegado</string>
+    <string name="logged_in">Conectado</string>
+    <string name="login_in">Conectando...</string>
+    <string name="marker_added">Marcador añadido a la ruta</string>
+    <string name="menu_credits">Créditos</string>
+    <string name="missing_fields">Campos incompletos</string>
+    <string name="near_me_tilte">Cerca de mi</string>
+    <string name="openDrawer">Abrir cajón</string>
+    <string name="option1_drawer">Inicio</string>
+    <string name="option2_drawer">Cerca de mi</string>
+    <string name="option3_drawer">Qué ver</string>
+    <string name="option4_drawer">Rutas</string>
+    <string name="option5_drawer">Iniciar sesión</string>
+    <string name="poi_title">Puntos de interés</string>
+    <string name="registered">Registrado</string>
+    <string name="registering">Registrando...</string>
+    <string name="route_list">Lista de rutas</string>
+    <string name="routes_title">Mapa de rutas</string>
+    <string name="save_route_title">Guardar ruta</string>
+    <string name="saved_route">Ruta guardada</string>
+    <string name="service_unavailable">Servicio no disponible. Prueba más tarde.</string>
+    <string name="sign_in_title">Iniciar sesión</string>
+    <string name="sign_up">Darse de alta</string>
+    <string name="void_save">Nada que guardar</string>
+</resources>

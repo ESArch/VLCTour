@@ -91,12 +91,4 @@ public class SaveRouteFragment extends Fragment {
 
         db.addRoute(name.getText().toString(), tipo.substring(0, tipo.length()-1), pois, db.getWritableDatabase());
     }
-
-    public String getPois() {
-        return pois;
-    }
-
-    public void setPois(String pois) {
-        this.pois = pois;
-    }
 }

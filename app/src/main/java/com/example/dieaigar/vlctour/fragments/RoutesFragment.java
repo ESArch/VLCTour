@@ -109,12 +109,17 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         fragmentTransaction.replace(R.id.map_container, mMapFragment);
         fragmentTransaction.commit();
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.save_route);
+        if(!path.equals("")) fab.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(ruta.size() != 0) {
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame, SaveRouteFragment.newInstance(ruta.toString()))
                             .commit();
+                } else {
+                    Toast.makeText(getActivity(), R.string.void_save, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -134,11 +139,13 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                POI punto = hash.get(marker);
-                ruta.add(punto.getId());
-                marker.hideInfoWindow();
-                Toast.makeText(getActivity(), R.string.marker_added, Toast.LENGTH_SHORT).show();
-                System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);
+                if (path.equals("")) {
+                    POI punto = hash.get(marker);
+                    ruta.add(punto.getId());
+                    marker.hideInfoWindow();
+                    Toast.makeText(getActivity(), R.string.marker_added, Toast.LENGTH_SHORT).show();
+                    System.out.println("(" + punto.getId() + ") " + marker.getTitle() + ": " + marker.getPosition().latitude + ", " + marker.getPosition().longitude);
+                }
             }
         });
 
