@@ -1,10 +1,18 @@
 <resources>
+    <!-- Drawer -->
     <string name="app_name">VLCTour</string>
     <string name="menu_credits">Credits</string>
     <string name="openDrawer">Open drawer</string>
     <string name="closeDrawer">Close drawer</string>
+    <string name="option1_drawer">Home</string>
+    <string name="option2_drawer">Near me</string>
+    <string name="option3_drawer">What to see</string>
+    <string name="option4_drawer">Routes</string>
+    <string name="option5_drawer">Sign in</string>
+    <string name="user_name_drawer">Akash Bangad</string>
+    <string name="user_email_drawer">akash.bangad@android4devs.com</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
+
+    <!-- Drawer -->
+
 </resources>

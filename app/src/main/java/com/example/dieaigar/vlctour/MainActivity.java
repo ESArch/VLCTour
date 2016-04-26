@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
     //First We Declare Titles And Icons For Our Navigation Drawer List View
     //This Icons And Titles Are holded in an Array as you can see
 
-    String TITLES[] = {"Home","Near me","What to see","Routes", "Sign in"};
+    String TITLES[] = new String[5];
     int ICONS[] = {R.drawable.ic_home,R.drawable.ic_near,R.drawable.ic_pois,R.drawable.ic_routes, R.drawable.ic_login};
 
     Fragment fragment = null;
@@ -50,8 +50,8 @@ public class MainActivity extends ActionBarActivity {
     //Similarly we Create a String Resource for the name and email in the header view
     //And we also create a int resource for profile picture in the header view
 
-    String NAME = "Akash Bangad";
-    String EMAIL = "akash.bangad@android4devs.com";
+    String NAME;
+    String EMAIL;
     int PROFILE = R.drawable.avatar;
 
     private Toolbar toolbar;                              // Declaring the Toolbar Object
@@ -67,6 +67,18 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TITLES[0] = getString(R.string.option1_drawer);
+        TITLES[1] = getString(R.string.option2_drawer);
+        TITLES[2] = getString(R.string.option3_drawer);
+        TITLES[3] = getString(R.string.option4_drawer);
+        TITLES[4] = getString(R.string.option5_drawer);
+
+        //Similarly we Create a String Resource for the name and email in the header view
+        //And we also create a int resource for profile picture in the header view
+
+        NAME = getString(R.string.user_name_drawer);
+        EMAIL = getString(R.string.user_email_drawer);
 
         MySqliteOpenHelper sqliteOpenHelper = MySqliteOpenHelper.getInstance(this);
 
