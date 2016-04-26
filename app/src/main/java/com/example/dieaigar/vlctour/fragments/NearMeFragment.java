@@ -505,7 +505,9 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 Location markerLocation = new Location("");
                 markerLocation.setLatitude(marker.getPosition().latitude);
                 markerLocation.setLongitude(marker.getPosition().longitude);
-                if(userLocation.distanceTo(markerLocation) > radius) {
+                Log.d("seekBarType",entry.getKey());
+                Log.d("TEST",""+filters.get(1).contains(entry.getKey()));
+                if(userLocation.distanceTo(markerLocation) > radius || filters.get(0).contains(entry.getKey())) {
                     marker.setVisible(false);
                 }
                 else {
