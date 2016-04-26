@@ -144,6 +144,7 @@ public class MainActivity extends ActionBarActivity {
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
+                                .addToBackStack(null)
                                 .commit();
                     }
 
@@ -255,6 +256,7 @@ public class MainActivity extends ActionBarActivity {
             //additional code
         } else {
             getFragmentManager().popBackStack();
+            setTitle(R.string.app_name);
         }
 
     }
