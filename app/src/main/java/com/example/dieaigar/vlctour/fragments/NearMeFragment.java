@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.dieaigar.vlctour.POI;
 import com.example.dieaigar.vlctour.R;
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.example.dieaigar.vlctour.pojos.googlePlace;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -56,6 +57,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,7 +81,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
-    private ImageButton enternainmentButton, hotelButton, restaurantButton, parkButton, museumButton, monumentButton, beachButton, shoppingButton, pubButton;
+    private ImageButton entertainmentButton, hotelButton, restaurantButton, parkButton, museumButton, monumentButton, beachButton, shoppingButton, pubButton;
     private SeekBar seekBar;
     private GoogleMap map;
     private double radius;
@@ -87,20 +92,15 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
     private View view;
     private GoogleApiClient googleApiClient;
     private MySqliteOpenHelper db;
-    private List<Marker> markers = new ArrayList<>(0);
     private Map<String,List<Marker>> mapMarkers = new HashMap<String, List<Marker>>(0);
 
     List<String> googleAPIFilters;
 
-    private static final List<String> restaurant = new ArrayList<String>(Arrays.asList("restaurant"));
+    private static final String restaurant = "restaurant";
     private static final List<String> shopping = new ArrayList<String>(Arrays.asList("department_store", "shopping_mall", "clothing_store", "jewelry_store", "shoe_store"));
-    private static final List<String> hotel = new ArrayList<String>(Arrays.asList("lodging"));
-    private static final List<String> pub = new ArrayList<String>(Arrays.asList("night_club"));
-    private static final List<String> entertainment = new ArrayList<String>(Arrays.asList("movie_theater"));
-    private static final String PARK = "park";
-    private static final String MUSEUM = "museum";
-    private static final String MONUMENT = "monument";
-    private static final String BEACH = "beach";
+    private static final String hotel = "lodging";
+    private static final String pub = "night_club";
+    private static final String entertainment = "movie_theater";
 
     public NearMeFragment() {
         // Required empty public constructor
@@ -123,6 +123,11 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         mapMarkers.put("museum", new ArrayList<Marker>(0));
         mapMarkers.put("monument", new ArrayList<Marker>(0));
         mapMarkers.put("beach", new ArrayList<Marker>(0));
+        mapMarkers.put("hotel", new ArrayList<Marker>(0));
+        mapMarkers.put("entertainment", new ArrayList<Marker>(0));
+        mapMarkers.put("restaurant", new ArrayList<Marker>(0));
+        mapMarkers.put("shopping", new ArrayList<Marker>(0));
+        mapMarkers.put("pub", new ArrayList<Marker>(0));
 
         //Location
         userLocation = new Location("");
@@ -211,8 +216,83 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         filters.put(0, new ArrayList<String>(0));
         filters.put(1, new ArrayList<String>(0));
         hotelButton = (ImageButton) view.findViewById(R.id.hotel);
-        enternainmentButton = (ImageButton) view.findViewById(R.id.entertainment);
+        hotelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("hotel")) {
+                    filters.get(1).add("hotel");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("hotel");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("hotel",1);
+                    changeColor("hotel",1);
+                }
+                else if(filters.get(1).contains("hotel")) {
+                    filters.get(0).add("hotel");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("hotel");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("hotel",0);
+                    changeColor("hotel",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
+        entertainmentButton = (ImageButton) view.findViewById(R.id.entertainment);
+        entertainmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("entertainment")) {
+                    filters.get(1).add("entertainment");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("entertainment");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("entertainment",1);
+                    changeColor("entertainment",1);
+                }
+                else if(filters.get(1).contains("entertainment")) {
+                    filters.get(0).add("entertainment");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("entertainment");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("entertainment",0);
+                    changeColor("entertainment",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         restaurantButton = (ImageButton) view.findViewById(R.id.restaurant);
+        restaurantButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("restaurant")) {
+                    filters.get(1).add("restaurant");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("restaurant");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("restaurant",1);
+                    changeColor("restaurant",1);
+                }
+                else if(filters.get(1).contains("restaurant")) {
+                    filters.get(0).add("restaurant");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("restaurant");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("restaurant",0);
+                    changeColor("restaurant",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         parkButton = (ImageButton) view.findViewById(R.id.park);
         parkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,7 +398,57 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             }
         });
         shoppingButton = (ImageButton) view.findViewById(R.id.shopping);
+        shoppingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("shopping")) {
+                    filters.get(1).add("shopping");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("shopping");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("shopping",1);
+                    changeColor("shopping",1);
+                }
+                else if(filters.get(1).contains("shopping")) {
+                    filters.get(0).add("shopping");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("shopping");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("shopping",0);
+                    changeColor("shopping",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
         pubButton = (ImageButton) view.findViewById(R.id.pub);
+        pubButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filterChange1Before",filters.get(1).toString());
+                Log.d("filterChange0Before",filters.toString());
+                if(filters.get(0).contains("pub")) {
+                    filters.get(1).add("pub");
+                    Log.d("DEBUG","Añadido a 1");
+                    filters.get(0).remove("pub");
+                    Log.d("DEBUG","Eliminado de 0");
+                    changeMarkers("pub",1);
+                    changeColor("pub",1);
+                }
+                else if(filters.get(1).contains("pub")) {
+                    filters.get(0).add("pub");
+                    Log.d("DEBUG","Añadido a 0");
+                    filters.get(1).remove("pub");
+                    Log.d("DEBUG","Eliminado de 1");
+                    changeMarkers("pub",0);
+                    changeColor("pub",0);
+                }
+                Log.d("filterChange1After",filters.get(1).toString());
+                Log.d("filterChange0After",filters.get(0).toString());
+            }
+        });
 
 
 
@@ -418,8 +548,8 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                 break;
             case "entertainment" :
                 if(1 == number)  {
-                    enternainmentButton.setBackground(getResources().getDrawable(R.drawable.ic_entertainment_selected)); }
-                else { enternainmentButton.setBackground(getResources().getDrawable(R.drawable.ic_entertainment)); }
+                    entertainmentButton.setBackground(getResources().getDrawable(R.drawable.ic_entertainment_selected)); }
+                else { entertainmentButton.setBackground(getResources().getDrawable(R.drawable.ic_entertainment)); }
                 break;
             case "museum" :
                 if(1 == number)  {
@@ -509,7 +639,7 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         }
     }
 
-    private class googleAPIAsyncTask extends AsyncTask<List<String>, Void, Void> {
+    private class googleAPIAsyncTask extends AsyncTask<List<String>, googlePlace, Void> {
 
         String types = "";
 
@@ -517,6 +647,11 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
         protected void onPreExecute() {
 
             types = buildTypes();
+            mapMarkers.get("shopping").clear();
+            mapMarkers.get("restaurant").clear();
+            mapMarkers.get("hotel").clear();
+            mapMarkers.get("entertainment").clear();
+            mapMarkers.get("pub").clear();
             super.onPreExecute();
         }
 
@@ -544,7 +679,24 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
                         response.append(line);
                     }
 
-                    Log.d("response", response.toString());
+                    JSONObject JSONresponse = new JSONObject(response.toString());
+                    JSONArray JSONresponseList = JSONresponse.getJSONArray("results");
+                    for(int i = 0; i < JSONresponseList.length(); i++) {
+                        googlePlace place = new googlePlace(
+                                JSONresponseList.getJSONObject(i).getString("name"),
+                                JSONresponseList.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
+                                JSONresponseList.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")
+                        );
+                        JSONArray JSONresponseTypes = JSONresponseList.getJSONObject(i).getJSONArray("types");
+                        if(JSONresponseTypes.toString().contains("restaurant")) { place.setType("restaurant"); }
+                        else if(JSONresponseTypes.toString().contains("lodging")) { place.setType("hotel"); }
+                        else if(JSONresponseTypes.toString().contains("night_club")) { place.setType("pub"); }
+                        else if(JSONresponseTypes.toString().contains("movie_theater")) { place.setType("entertainment"); }
+                        else { place.setType("shopping"); }
+                        Log.d("response", place.toString());
+
+                        publishProgress(place);
+                    }
                 }
             } catch (MalformedURLException e) {
                 Log.e("googleAPIAsyncTaskERROR","URL errónea");
@@ -555,8 +707,46 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             } catch (IOException e) {
                 Log.e("googleAPIAsyncTaskERROR","Excepcion I/O");
                 e.printStackTrace();
+            } catch (JSONException e) {
+                Log.e("googleAPIAsyncTaskERROR","Excepcion JSON");
+                e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(googlePlace... values) {
+            addPlace(values[0]);
+            super.onProgressUpdate(values);
+        }
+
+        public void addPlace(googlePlace place) {
+
+            MarkerOptions options = new MarkerOptions();
+            options.position(new LatLng(place.getLatitud(), place.getLongitud()));
+            options.title(place.getNombre());
+            switch (place.getType()) {
+                case "shopping" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_shopping));
+                    mapMarkers.get("shopping").add(map.addMarker(options));
+                    break;
+                case "restaurant" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant));
+                    mapMarkers.get("restaurant").add(map.addMarker(options));
+                    break;
+                case "hotel" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_hotel));
+                    mapMarkers.get("hotel").add(map.addMarker(options));
+                    break;
+                case "entertainment" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_entertainment));
+                    mapMarkers.get("entertainment").add(map.addMarker(options));
+                    break;
+                case "pub" :
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pub));
+                    mapMarkers.get("pub").add(map.addMarker(options));
+                    break;
+            }
         }
 
         public void setGoogleAPIFilters() {
@@ -564,19 +754,19 @@ public class NearMeFragment extends Fragment implements OnMapReadyCallback, Goog
             for(String type : filters.get(1)) {
                 switch (type) {
                     case "restaurant" :
-                        googleAPIFilters.addAll(restaurant);
+                        googleAPIFilters.add(restaurant);
                         break;
                     case "shopping" :
                         googleAPIFilters.addAll(shopping);
                         break;
                     case "hotel" :
-                        googleAPIFilters.addAll(hotel);
+                        googleAPIFilters.add(hotel);
                         break;
                     case "pub" :
-                        googleAPIFilters.addAll(pub);
+                        googleAPIFilters.add(pub);
                         break;
                     case "entertainment" :
-                        googleAPIFilters.addAll(entertainment);
+                        googleAPIFilters.add(entertainment);
                         break;
                 }
             }

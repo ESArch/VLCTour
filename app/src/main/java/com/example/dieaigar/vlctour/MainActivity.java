@@ -218,30 +218,7 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    /**
-    public void filterChange(View view) {
-        //TODO mostrar u ocultar en el mapa el marker.
-        NearMeFragment nearMeFragment = (NearMeFragment) fragment;
-        Log.d("filterChange1Before",nearMeFragment.getFilters().get(1).toString());
-        Log.d("filterChange0Before",nearMeFragment.getFilters().get(0).toString());
-        if(nearMeFragment.getFilters().get(0).contains(getResources().getResourceEntryName(view.getId()))) {
-            nearMeFragment.getFilters().get(1).add(getResources().getResourceEntryName(view.getId()));
-            Log.d("DEBUG","Añadido a 1");
-            nearMeFragment.getFilters().get(0).remove(getResources().getResourceEntryName(view.getId()));
-            Log.d("DEBUG","Eliminado de 0");
-            nearMeFragment.changeColor(getResources().getResourceEntryName(view.getId()),1);
-        }
-        else if(nearMeFragment.getFilters().get(1).contains(getResources().getResourceEntryName(view.getId()))) {
-            nearMeFragment.getFilters().get(0).add(getResources().getResourceEntryName(view.getId()));
-            Log.d("DEBUG","Añadido a 0");
-            nearMeFragment.getFilters().get(1).remove(getResources().getResourceEntryName(view.getId()));
-            Log.d("DEBUG","Eliminado de 1");
-            nearMeFragment.changeColor(getResources().getResourceEntryName(view.getId()),0);
-        }
-        Log.d("filterChange1After",nearMeFragment.getFilters().get(1).toString());
-        Log.d("filterChange0After",nearMeFragment.getFilters().get(0).toString());
-    }
-    */
+
     public void login(String username, String email){
         NAME = username;
         mAdapter.notifyDataSetChanged();
