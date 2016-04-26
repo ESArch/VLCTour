@@ -245,4 +245,17 @@ public class MainActivity extends ActionBarActivity {
         NAME = username;
         mAdapter.notifyDataSetChanged();
     }
+
+    public void onBackPressed(){
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
 }

@@ -82,6 +82,7 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.POIViewHolder>{
                     FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame, fragment)
+                            .addToBackStack(null)
                             .commit();
                 }
             }

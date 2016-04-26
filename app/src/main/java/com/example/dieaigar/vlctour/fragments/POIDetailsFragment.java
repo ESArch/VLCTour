@@ -137,4 +137,11 @@ Declarar instancias globales
         return resizedBitmap;
     }
 
+    public void onBackPressed(){
+
+        // here remove code for your last fragment
+        this.onBackPressed();
+
+    }
+
 }
