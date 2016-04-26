@@ -1,6 +1,15 @@
 package com.example.dieaigar.vlctour;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.Display;
+
 public class POI {
     private int imagen;
     private String nombre;
@@ -8,6 +17,8 @@ public class POI {
     private Double latitud;
     private Double longitud;
     private int id;
+    private Context context;
+
 
     public POI(String nombre, String tipo, Double longitud, Double latitud) {
         this.nombre = nombre;
@@ -52,4 +63,5 @@ public class POI {
     public String toString(){
         return "POI: " + nombre + " latitud: " + latitud + " longitud: " + longitud;
     }
+
 }
