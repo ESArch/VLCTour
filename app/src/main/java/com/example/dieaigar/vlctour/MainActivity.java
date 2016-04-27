@@ -124,6 +124,7 @@ public class MainActivity extends ActionBarActivity {
 
                     switch (position){
                         case 1:
+                            fragment = new HomeFragment();
                             break;
                         case 2:
                             fragment = new NearMeFragment();
