@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.dieaigar.vlctour.databases.MySqliteOpenHelper;
+import com.example.dieaigar.vlctour.fragments.HomeFragment;
 import com.example.dieaigar.vlctour.fragments.NearMeFragment;
 import com.example.dieaigar.vlctour.fragments.POIFragment;
 import com.example.dieaigar.vlctour.fragments.RoutesFragment;
@@ -208,13 +209,14 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+
+        /*int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_credits) {
             Toast.makeText(MainActivity.this, "Credits", Toast.LENGTH_SHORT).show();
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -236,5 +238,17 @@ public class MainActivity extends ActionBarActivity {
             setTitle(R.string.app_name);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Fragment fragment = new HomeFragment();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
     }
 }

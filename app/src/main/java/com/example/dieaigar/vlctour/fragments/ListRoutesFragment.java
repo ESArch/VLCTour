@@ -47,6 +47,7 @@ public class ListRoutesFragment extends Fragment {
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame, fragment)
+                            .addToBackStack(null)
                             .commit();
                 }
             }
@@ -68,6 +69,7 @@ public class ListRoutesFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, RoutesFragment.newInstance(path))
+                        .addToBackStack(null)
                         .commit();
             }
         });

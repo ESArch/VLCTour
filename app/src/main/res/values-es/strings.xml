@@ -36,4 +36,9 @@
     <string name="email">CORREO ELECTRÓNICO</string>
     <string name="register">Registrar</string>
     <string name="registered_user">¡Ya estoy registrado! Iniciar sesión</string>
+    <string name="home">Inicio</string>
+    <string name="nearme_description">No des más vueltas buscando un sitio. Búscalos desde tu móvil</string>
+    <string name="poi_description">Descubre los lugares más interesantes de Valencia</string>
+    <string name="routes">Rutas</string>
+    <string name="routes_description">Planifica tu viaje con antelación con rutas personalizables</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.dieaigar.vlctour.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -100,6 +102,12 @@ public class SignInFragment extends Fragment{
         if(valid){
             Toast.makeText(getActivity(), R.string.logged_in, Toast.LENGTH_SHORT).show();
             ((MainActivity)getActivity()).login(username, "");
+            getActivity().onBackPressed();
+            InputMethodManager inputManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
         else

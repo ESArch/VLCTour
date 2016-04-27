@@ -8,9 +8,9 @@
     <string name="option3_drawer">What to see</string>
     <string name="option4_drawer">Routes</string>
     <string name="option5_drawer">Sign in</string>
-    <string name="user_name_drawer" translatable="false">Akash Bangad</string>
-    <string name="user_email_drawer" translatable="false">akash.bangad@android4devs.com</string>
-    <string name="poi_title">Points Of Interest</string>
+    <string name="user_name_drawer" translatable="false">Username</string>
+    <string name="user_email_drawer" translatable="false">email@address.com</string>
+    <string name="poi_title">What to see</string>
     <string name="near_me_tilte">Near Me</string>
     <string name="routes_title">Route Map</string>
     <string name="save_route_title">Save Route</string>
@@ -37,5 +37,10 @@
     <string name="email">EMAIL</string>
     <string name="register">REGISTER</string>
     <string name="registered_user">Already registered! Log me in.</string>
+    <string name="routes">Routes</string>
+    <string name="nearme_description">Don\'t wander around anymore looking for a place. Check them out from your phone</string>
+    <string name="poi_description">Discover the most interesting places of Valencia</string>
+    <string name="routes_description">Plan your trip ahead with customizable routes</string>
+    <string name="home">Home</string>
 
 </resources>

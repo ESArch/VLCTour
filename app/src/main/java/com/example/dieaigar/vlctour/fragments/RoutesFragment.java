@@ -107,6 +107,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
         mMapFragment = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.map_container, mMapFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.save_route);
         if(!path.equals("")) fab.setVisibility(View.INVISIBLE);
@@ -116,6 +117,7 @@ public class RoutesFragment extends Fragment implements OnMapReadyCallback {
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame, SaveRouteFragment.newInstance(ruta.toString()))
+                            .addToBackStack(null)
                             .commit();
                 } else {
                     Toast.makeText(getActivity(), R.string.void_save, Toast.LENGTH_SHORT).show();
